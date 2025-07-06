@@ -606,30 +606,20 @@
 
 /* Logo Responsive Styles */
 @media (max-width: 768px) {
-  .logo-icon {
-    width: 44px;
-    height: 44px;
-  }
-  
   .logo-image {
-    width: 28px;
+    width: 120px;
     height: 28px;
   }
   
   .mobile-logo-image {
-    width: 24px;
-    height: 24px;
+    width: 132px;
+    height: 32px;
   }
 }
 
 @media (max-width: 480px) {
-  .logo-icon {
-    width: 40px;
-    height: 40px;
-  }
-  
   .logo-image {
-    width: 24px;
+    width: 100px;
     height: 24px;
   }
 }
