@@ -20,7 +20,7 @@ import {
   Beaker,
   Package
 } from 'lucide-react';
-import '../css/Services.css';
+import '../Css/Services.css';
 
 const Services = () => {
   const [activeService, setActiveService] = useState(0);

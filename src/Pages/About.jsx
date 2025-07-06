@@ -14,7 +14,7 @@ import {
   TrendingUp,
   Briefcase
 } from 'lucide-react';
-import '../css/About.css';
+import '../Css/About.css';
 
 const About = () => {
   const ref = useRef(null);

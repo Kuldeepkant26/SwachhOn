@@ -29,7 +29,7 @@ import {
   Beaker,
   ChevronRight
 } from 'lucide-react';
-import '../css/Home.css';
+import '../Css/Home.css';
 
 const Home = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
