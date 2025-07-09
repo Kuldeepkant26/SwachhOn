@@ -24,6 +24,11 @@ import {
   ArrowDown
 } from 'lucide-react';
 import './Home.css';
+import simage1 from '../assets/simage1.jpg';
+import simage2 from '../assets/simage2.webp';
+import simage3 from '../assets/simage3.jpg';
+import simage4 from '../assets/simage4.jpg';
+import simage5 from '../assets/simage5.webp';
 
 const Home = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
@@ -114,21 +119,21 @@ const Home = () => {
       position: "Business Owner",
       content: "SwachhOn transformed our office environment. Their attention to detail and eco-friendly approach is remarkable.",
       rating: 5,
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b47c?w=150&h=150&fit=crop&crop=face"
+      avatar: simage2
     },
     {
       name: "Michael Chen",
       position: "Residential Customer",
       content: "Exceptional service! They're always on time, professional, and leave our home spotless every single time.",
       rating: 5,
-      avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
+      avatar: simage3
     },
     {
       name: "Emma Davis",
       position: "Property Manager",
       content: "Managing multiple properties is easier with SwachhOn. Their consistency and reliability are unmatched.",
       rating: 5,
-      avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face"
+      avatar: simage4
     }
   ];
 
@@ -136,17 +141,17 @@ const Home = () => {
     {
       title: "Residential Cleaning",
       description: "Complete home cleaning solutions",
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop"
+      image: simage1
     },
     {
       title: "Commercial Services",
       description: "Professional office and business cleaning",
-      image: "https://images.unsplash.com/photo-1497366216548-37526070297c?w=400&h=300&fit=crop"
+      image: simage3
     },
     {
       title: "Deep Cleaning",
       description: "Thorough sanitization and disinfection",
-      image: "https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?w=400&h=300&fit=crop"
+      image: simage5
     }
   ];
 
@@ -240,7 +245,7 @@ const Home = () => {
           >
             <div className="hero-image-container">
               <img 
-                src="https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&h=400&fit=crop" 
+                src={simage1} 
                 alt="Professional Cleaning Service" 
                 className="hero-image"
               />

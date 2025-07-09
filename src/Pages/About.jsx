@@ -15,6 +15,11 @@ import {
   Briefcase
 } from 'lucide-react';
 import '../Css/About.css';
+import simage1 from '../assets/simage1.jpg';
+import simage2 from '../assets/simage2.webp';
+import simage3 from '../assets/simage3.jpg';
+import simage4 from '../assets/simage4.jpg';
+import simage5 from '../assets/simage5.webp';
 
 const About = () => {
   const ref = useRef(null);
@@ -117,25 +122,25 @@ const About = () => {
     {
       name: 'Dr. Rajesh Kumar',
       position: 'Chief Executive Officer',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&h=300&fit=crop&crop=face',
+      image: simage2,
       description: '20+ years in chemical engineering and business leadership.'
     },
     {
       name: 'Sarah Chen',
       position: 'Head of R&D',
-      image: 'https://images.unsplash.com/photo-1494790108755-2616b612b977?w=300&h=300&fit=crop&crop=face',
+      image: simage3,
       description: 'Leading innovation in sustainable cleaning technologies.'
     },
     {
       name: 'Michael Johnson',
       position: 'Operations Director',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&h=300&fit=crop&crop=face',
+      image: simage4,
       description: 'Expert in supply chain optimization and logistics.'
     },
     {
       name: 'Dr. Priya Sharma',
       position: 'Quality Assurance Lead',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=300&h=300&fit=crop&crop=face',
+      image: simage5,
       description: 'Ensuring the highest standards in product quality and safety.'
     }
   ];
@@ -161,7 +166,7 @@ const About = () => {
           </motion.div>
           <motion.div className="about-hero-image" variants={scaleVariants}>
             <img 
-              src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=600&h=400&fit=crop" 
+              src={simage1} 
               alt="SwachhOn Facility"
               className="hero-img"
             />

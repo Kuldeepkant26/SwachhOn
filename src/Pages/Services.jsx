@@ -21,6 +21,11 @@ import {
   Package
 } from 'lucide-react';
 import '../Css/Services.css';
+import simage1 from '../assets/simage1.jpg';
+import simage2 from '../assets/simage2.webp';
+import simage3 from '../assets/simage3.jpg';
+import simage4 from '../assets/simage4.jpg';
+import simage5 from '../assets/simage5.webp';
 
 const Services = () => {
   const [activeService, setActiveService] = useState(0);
@@ -71,7 +76,7 @@ const Services = () => {
         'Industrial floor cleaners',
         'Equipment maintenance solutions'
       ],
-      image: 'https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&h=400&fit=crop'
+      image: simage1
     },
     {
       icon: <Truck size={50} />,
@@ -83,7 +88,7 @@ const Services = () => {
         'Emergency supply services',
         'Custom packaging options'
       ],
-      image: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=600&h=400&fit=crop'
+      image: simage2
     },
     {
       icon: <Beaker size={50} />,
@@ -95,7 +100,7 @@ const Services = () => {
         'Product testing & validation',
         'Ongoing technical support'
       ],
-      image: 'https://images.unsplash.com/photo-1582719471384-894fbb16e074?w=600&h=400&fit=crop'
+      image: simage3
     },
     {
       icon: <Shield size={50} />,
@@ -107,7 +112,7 @@ const Services = () => {
         'Training programs',
         'Environmental impact assessments'
       ],
-      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=600&h=400&fit=crop'
+      image: simage4
     },
     {
       icon: <Wrench size={50} />,
@@ -119,7 +124,7 @@ const Services = () => {
         'Equipment maintenance',
         'Performance optimization'
       ],
-      image: 'https://images.unsplash.com/photo-1581092921461-eab62e97a780?w=600&h=400&fit=crop'
+      image: simage5
     },
     {
       icon: <Recycle size={50} />,
@@ -131,7 +136,7 @@ const Services = () => {
         'Waste reduction programs',
         'Green certification support'
       ],
-      image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop'
+      image: simage1
     }
   ];
 
