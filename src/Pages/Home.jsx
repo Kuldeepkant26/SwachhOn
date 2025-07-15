@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
-import { 
-  ArrowRight, 
-  Play, 
-  CheckCircle, 
-  Star, 
-  Users, 
-  Award, 
+import {
+  ArrowRight,
+  Play,
+  CheckCircle,
+  Star,
+  Users,
+  Award,
   TrendingUp,
   Sparkles,
   Leaf,
@@ -33,30 +33,20 @@ import simage5 from '../assets/simage5.webp';
 const Home = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-  
+
   const heroRef = useRef(null);
   const statsRef = useRef(null);
   const featuresRef = useRef(null);
   const ctaRef = useRef(null);
-  
+
   const { scrollYProgress } = useScroll();
   const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.8]);
-  
+
   const isHeroInView = useInView(heroRef, { once: true });
   const isStatsInView = useInView(statsRef, { once: true });
   const isFeaturesInView = useInView(featuresRef, { once: true });
   const isCtaInView = useInView(ctaRef, { once: true });
-
-  // Mouse tracking for interactive elements
-  useEffect(() => {
-    const handleMouseMove = (e) => {
-      setMousePosition({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener('mousemove', handleMouseMove);
-    return () => window.removeEventListener('mousemove', handleMouseMove);
-  }, []);
 
   // Auto-rotate testimonials
   useEffect(() => {
@@ -157,45 +147,22 @@ const Home = () => {
 
   return (
     <div className="home-container">
-      {/* Custom Cursor */}
-      <div 
-        className="custom-cursor"
-        style={{
-          left: mousePosition.x,
-          top: mousePosition.y,
-        }}
-      />
-
       {/* Hero Section */}
-      <motion.section 
+      <motion.section
         ref={heroRef}
         className="hero-section"
         style={{ opacity: heroOpacity, scale: heroScale }}
       >
-        <div className="hero-background">
-          <div className="gradient-orb orb-1"></div>
-          <div className="gradient-orb orb-2"></div>
-          <div className="gradient-orb orb-3"></div>
-        </div>
-        
         <div className="hero-content">
-          <motion.div 
+          <motion.div
             className="hero-text"
             initial={{ opacity: 0, y: 50 }}
             animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            <motion.div 
-              className="hero-badge"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={isHeroInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.6, delay: 0.4 }}
-            >
-              <Sparkles size={20} />
-              <span>Premium Cleaning Services</span>
-            </motion.div>
-            
-            <motion.h1 
+          
+
+            <motion.h1
               className="hero-title"
               initial={{ opacity: 0, y: 30 }}
               animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
@@ -204,18 +171,18 @@ const Home = () => {
               Transform Your Space with
               <span className="gradient-text">SwachhOn</span>
             </motion.h1>
-            
-            <motion.p 
+
+            <motion.p
               className="hero-description"
               initial={{ opacity: 0, y: 20 }}
               animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
-              Experience the future of cleaning with our eco-friendly, professional services. 
+              Experience the future of cleaning with our eco-friendly, professional services.
               We bring cleanliness, health, and sustainability to your doorstep.
             </motion.p>
-            
-            <motion.div 
+
+            <motion.div
               className="hero-actions"
               initial={{ opacity: 0, y: 20 }}
               animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
@@ -227,30 +194,27 @@ const Home = () => {
                 <div className="button-glow"></div>
               </button>
               
-              <button 
-                className="cta-secondary"
-                onClick={() => setIsVideoModalOpen(true)}
-              >
-                <Play size={20} />
+              <button className="cta-secondary" onClick={() => setIsVideoModalOpen(true)}>
+                <Play size={18} />
                 <span>Watch Demo</span>
               </button>
             </motion.div>
           </motion.div>
-          
-          <motion.div 
+
+          <motion.div
             className="hero-visual"
             initial={{ opacity: 0, x: 50 }}
             animate={isHeroInView ? { opacity: 1, x: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <div className="hero-image-container">
-              <img 
-                src={simage1} 
-                alt="Professional Cleaning Service" 
+              <img
+                src={simage1}
+                alt="Professional Cleaning Service"
                 className="hero-image"
               />
               <div className="image-overlay">
-                <button 
+                <button
                   className="play-button"
                   onClick={() => setIsVideoModalOpen(true)}
                 >
@@ -258,24 +222,12 @@ const Home = () => {
                 </button>
               </div>
             </div>
-            
-            <motion.div 
-              className="floating-card"
-              animate={{ y: [0, -10, 0] }}
-              transition={{ duration: 3, repeat: Infinity }}
-            >
-              <div className="card-icon">
-                <CheckCircle size={24} />
-              </div>
-              <div>
-                <div className="card-title">100% Satisfaction</div>
-                <div className="card-subtitle">Guaranteed Results</div>
-              </div>
-            </motion.div>
+
+
           </motion.div>
         </div>
-        
-        <motion.div 
+
+        <motion.div
           className="scroll-indicator"
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
@@ -285,7 +237,7 @@ const Home = () => {
       </motion.section>
 
       {/* Stats Section */}
-      <motion.section 
+      <motion.section
         ref={statsRef}
         className="stats-section"
         initial={{ opacity: 0 }}
@@ -303,7 +255,7 @@ const Home = () => {
                   initial={{ opacity: 0, y: 50 }}
                   animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
                   transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ 
+                  whileHover={{
                     scale: 1.05,
                     boxShadow: "0 20px 40px rgba(16, 185, 129, 0.2)"
                   }}
@@ -311,12 +263,12 @@ const Home = () => {
                   <div className="stat-icon">
                     <Icon size={32} />
                   </div>
-                  <motion.div 
+                  <motion.div
                     className="stat-number"
                     initial={{ scale: 0 }}
                     animate={isStatsInView ? { scale: 1 } : {}}
-                    transition={{ 
-                      duration: 0.8, 
+                    transition={{
+                      duration: 0.8,
                       delay: 0.5 + index * 0.1,
                       type: "spring",
                       stiffness: 100
@@ -333,14 +285,14 @@ const Home = () => {
       </motion.section>
 
       {/* Features Section */}
-      <motion.section 
+      <motion.section
         ref={featuresRef}
         className="features-section"
         initial={{ opacity: 0 }}
         animate={isFeaturesInView ? { opacity: 1 } : {}}
       >
         <div className="section-container">
-          <motion.div 
+          <motion.div
             className="section-header"
             initial={{ opacity: 0, y: 30 }}
             animate={isFeaturesInView ? { opacity: 1, y: 0 } : {}}
@@ -351,7 +303,7 @@ const Home = () => {
               Discover the features that make us the leading choice for professional cleaning services
             </p>
           </motion.div>
-          
+
           <div className="features-grid">
             {features.map((feature, index) => {
               const Icon = feature.icon;
@@ -388,7 +340,7 @@ const Home = () => {
               Comprehensive cleaning solutions tailored to your needs
             </p>
           </div>
-          
+
           <div className="services-grid">
             {services.map((service, index) => (
               <motion.div
@@ -426,7 +378,7 @@ const Home = () => {
               Real feedback from satisfied customers across the country
             </p>
           </div>
-          
+
           <div className="testimonials-container">
             <AnimatePresence mode="wait">
               <motion.div
@@ -440,20 +392,20 @@ const Home = () => {
                 <div className="quote-icon">
                   <Quote size={32} />
                 </div>
-                
+
                 <p className="testimonial-text">
                   "{testimonials[currentTestimonial].content}"
                 </p>
-                
+
                 <div className="testimonial-rating">
                   {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
                     <Star key={i} size={20} fill="currentColor" />
                   ))}
                 </div>
-                
+
                 <div className="testimonial-author">
-                  <img 
-                    src={testimonials[currentTestimonial].avatar} 
+                  <img
+                    src={testimonials[currentTestimonial].avatar}
                     alt={testimonials[currentTestimonial].name}
                     className="author-avatar"
                   />
@@ -464,7 +416,7 @@ const Home = () => {
                 </div>
               </motion.div>
             </AnimatePresence>
-            
+
             <div className="testimonials-nav">
               {testimonials.map((_, index) => (
                 <button
@@ -479,14 +431,14 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <motion.section 
+      <motion.section
         ref={ctaRef}
         className="cta-section"
         initial={{ opacity: 0 }}
         animate={isCtaInView ? { opacity: 1 } : {}}
       >
         <div className="cta-container">
-          <motion.div 
+          <motion.div
             className="cta-content"
             initial={{ opacity: 0, y: 50 }}
             animate={isCtaInView ? { opacity: 1, y: 0 } : {}}
@@ -497,7 +449,7 @@ const Home = () => {
               Join thousands of satisfied customers who trust SwachhOn for their cleaning needs.
               Get started today and experience the difference.
             </p>
-            
+
             <div className="cta-actions">
               <button className="cta-btn primary">
                 <span>Book Now</span>
@@ -508,7 +460,7 @@ const Home = () => {
                 <span>Call Us</span>
               </button>
             </div>
-            
+
             <div className="cta-contact">
               <div className="contact-item">
                 <Phone size={16} />
@@ -544,7 +496,7 @@ const Home = () => {
               exit={{ scale: 0.5, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <button 
+              <button
                 className="video-close"
                 onClick={() => setIsVideoModalOpen(false)}
               >

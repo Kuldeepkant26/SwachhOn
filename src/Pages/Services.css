@@ -1,6 +1,7 @@
 /* Services Page Styles */
 .services {
   margin-top: 80px;
+  padding-top: 3rem;
 }
 
 /* Services Hero Section */
@@ -443,8 +444,7 @@
     align-items: center;
   }
 
-  .hero-actions .btn-primary,
-  .hero-actions .btn-secondary {
+  .hero-actions .btn-primary {
     width: 100%;
     max-width: 250px;
   }

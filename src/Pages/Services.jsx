@@ -222,13 +222,6 @@ const Services = () => {
               >
                 Get Started <ArrowRight size={20} />
               </motion.button>
-              <motion.button
-                className="btn-secondary"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                View Catalog
-              </motion.button>
             </motion.div>
           </motion.div>
         </div>
