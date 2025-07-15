@@ -213,14 +213,7 @@ const Home = () => {
                 alt="Professional Cleaning Service"
                 className="hero-image"
               />
-              <div className="image-overlay">
-                <button
-                  className="play-button"
-                  onClick={() => setIsVideoModalOpen(true)}
-                >
-                  <Play size={24} />
-                </button>
-              </div>
+            
             </div>
 
 
