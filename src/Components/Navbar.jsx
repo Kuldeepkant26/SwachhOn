@@ -17,6 +17,7 @@ import {
   MessageCircle
 } from 'lucide-react';
 import './Navbar.css';
+import logo3 from '../assets/logo3.png';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -187,9 +188,16 @@ const Navbar = () => {
       >
         <div className="nav-container">
           {/* Logo */}
-          <Link to="/" className="nav-logo">
+          <Link 
+            to="/" 
+            className="nav-logo"
+            onClick={() => {
+              // Mark navigation immediately when logo is clicked
+              window.sessionStorage.setItem('has_navigated', 'true');
+            }}
+          >
             <img 
-              src="/SwachhOn_icon.png" 
+              src={logo3}
               alt="SwachhOn Logo" 
               className="logo-image"
             />
@@ -205,6 +213,10 @@ const Navbar = () => {
                 <Link
                   to={item.path}
                   className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
+                  onClick={() => {
+                    // Mark navigation immediately when any link is clicked
+                    window.sessionStorage.setItem('has_navigated', 'true');
+                  }}
                 >
                   <motion.div
                     variants={linkVariants}
@@ -337,7 +349,7 @@ const Navbar = () => {
               <div className="mobile-header">
                 <div className="mobile-logo">
                   <img 
-                    src="/SwachhOn_icon.png" 
+                    src={logo3}
                     alt="SwachhOn Logo" 
                     className="mobile-logo-image"
                   />
@@ -364,7 +376,11 @@ const Navbar = () => {
                       <Link
                         to={item.path}
                         className={`mobile-nav-link ${location.pathname === item.path ? 'active' : ''}`}
-                        onClick={() => setIsOpen(false)}
+                        onClick={() => {
+                          setIsOpen(false);
+                          // Mark navigation immediately when mobile link is clicked
+                          window.sessionStorage.setItem('has_navigated', 'true');
+                        }}
                       >
                         <motion.div
                           className="mobile-link-content"

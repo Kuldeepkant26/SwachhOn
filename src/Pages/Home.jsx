@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import {
   ArrowRight,
   Play,
@@ -23,6 +24,7 @@ import {
   Quote,
   ArrowDown
 } from 'lucide-react';
+import SplashScreen from '../Components/SplashScreen';
 import './Home.css';
 import simage1 from '../assets/simage1.jpg';
 import simage2 from '../assets/simage2.webp';
@@ -33,11 +35,39 @@ import simage5 from '../assets/simage5.webp';
 const Home = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
   const [isVideoModalOpen, setIsVideoModalOpen] = useState(false);
+  const [showSplash, setShowSplash] = useState(false);
+  const location = useLocation();
 
   const heroRef = useRef(null);
   const statsRef = useRef(null);
   const featuresRef = useRef(null);
   const ctaRef = useRef(null);
+
+  // Check if this is a page refresh (not navigation)
+  useEffect(() => {
+    // Check if user has navigated within the app in this session
+    const hasNavigated = window.sessionStorage.getItem('has_navigated');
+    
+    // Check for actual browser refresh/reload
+    const navigationEntries = performance.getEntriesByType('navigation');
+    const isPageReload = navigationEntries.length > 0 && 
+                        navigationEntries[0].type === 'reload';
+    
+    // Show splash ONLY if:
+    // 1. It's a browser reload/refresh, OR
+    // 2. This is the very first visit (no navigation history exists)
+    if (isPageReload || !hasNavigated) {
+      setShowSplash(true);
+    }
+    
+    // Always mark that we've been to this page (but don't interfere with splash logic)
+    if (!hasNavigated && !isPageReload) {
+      // Only set this flag if it's the first visit and NOT a reload
+      setTimeout(() => {
+        window.sessionStorage.setItem('has_navigated', 'true');
+      }, 4000); // Wait for splash to complete
+    }
+  }, []);
 
   const { scrollYProgress } = useScroll();
   const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
@@ -146,13 +176,19 @@ const Home = () => {
   ];
 
   return (
-    <div className="home-container">
-      {/* Hero Section */}
-      <motion.section
-        ref={heroRef}
-        className="hero-section"
-        style={{ opacity: heroOpacity, scale: heroScale }}
-      >
+    <>
+      {/* Splash Screen - Only shows on page refresh */}
+      {showSplash && (
+        <SplashScreen onComplete={() => setShowSplash(false)} />
+      )}
+      
+      <div className="home-container">
+        {/* Hero Section */}
+        <motion.section
+          ref={heroRef}
+          className="hero-section"
+          style={{ opacity: heroOpacity, scale: heroScale }}
+        >
         <div className="hero-content">
           <motion.div
             className="hero-text"
@@ -503,7 +539,8 @@ const Home = () => {
           </motion.div>
         )}
       </AnimatePresence>
-    </div>
+      </div>
+    </>
   );
 };
 
