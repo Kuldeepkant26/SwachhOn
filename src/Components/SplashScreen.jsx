@@ -6,38 +6,21 @@ import './SplashScreen.css';
 
 const SplashScreen = ({ onComplete }) => {
   const [showSplash, setShowSplash] = useState(true);
-  const [loadingProgress, setLoadingProgress] = useState(0);
   const [minTimeElapsed, setMinTimeElapsed] = useState(false);
 
   useEffect(() => {
     // Ensure minimum display time of 3 seconds
     const minTimer = setTimeout(() => {
       setMinTimeElapsed(true);
+      // Hide splash screen after minimum time
+      setTimeout(() => {
+        setShowSplash(false);
+        onComplete();
+      }, 1200);
     }, 3000);
 
     return () => clearTimeout(minTimer);
-  }, []);
-
-  useEffect(() => {
-    // Simulate loading progress with increased timing
-    const progressInterval = setInterval(() => {
-      setLoadingProgress(prev => {
-        if (prev >= 100 && minTimeElapsed) {
-          clearInterval(progressInterval);
-          // Hide splash screen after a longer delay for better UX
-          setTimeout(() => {
-            setShowSplash(false);
-            onComplete();
-          }, 1200); // Increased from 500ms to 1200ms
-          return 100;
-        }
-        // Slower progress increment for longer display time
-        return prev + Math.random() * 8 + 2; // Reduced from 15+5 to 8+2
-      });
-    }, 150); // Increased from 100ms to 150ms
-
-    return () => clearInterval(progressInterval);
-  }, [onComplete, minTimeElapsed]);
+  }, [onComplete]);
 
   const containerVariants = {
     initial: { opacity: 0 },
@@ -101,7 +84,7 @@ const SplashScreen = ({ onComplete }) => {
   const progressVariants = {
     initial: { width: 0 },
     animate: { 
-      width: `${loadingProgress}%`,
+      width: `100%`,
       transition: { duration: 0.3, ease: "easeOut" }
     }
   };
@@ -215,30 +198,6 @@ const SplashScreen = ({ onComplete }) => {
             >
               <h1>SwachhOn</h1>
               <p>Cleaning Excellence, Environmental Care</p>
-            </motion.div>
-
-            {/* Loading Progress */}
-            <motion.div
-              className="loading-container"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.6 }}
-            >
-              <div className="loading-bar">
-                <motion.div
-                  className="loading-progress"
-                  variants={progressVariants}
-                  initial="initial"
-                  animate="animate"
-                />
-              </div>
-              <motion.span
-                className="loading-text"
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                Loading Excellence...
-              </motion.span>
             </motion.div>
           </div>
 

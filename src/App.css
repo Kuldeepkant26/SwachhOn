@@ -2,11 +2,13 @@
   min-height: 100vh;
   position: relative;
   overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Page transitions */
 .page-transition {
-  min-height: 100vh;
+  flex: 1;
 }
 
 /* Hero section animations */

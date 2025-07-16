@@ -212,51 +212,7 @@ const About = () => {
       </section>
 
       {/* Company Stats */}
-      <section className="stats-section bg-pattern">
-        <div className="container">
-          <motion.div 
-            className="section-header"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-          >
-            <motion.h2 className="section-title text-white" variants={itemVariants}>
-              Our Achievements
-            </motion.h2>
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-4"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-          >
-            {achievements.map((achievement, index) => (
-              <motion.div
-                key={index}
-                className="achievement-card"
-                variants={itemVariants}
-                whileHover={{ scale: 1.05 }}
-              >
-                <div className="achievement-icon">
-                  {achievement.icon}
-                </div>
-                <motion.div 
-                  className="achievement-number"
-                  initial={{ scale: 0 }}
-                  whileInView={{ scale: 1 }}
-                  transition={{ delay: index * 0.2, type: 'spring' }}
-                >
-                  {achievement.number}
-                </motion.div>
-                <div className="achievement-label">{achievement.label}</div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+  
 
       {/* Company Timeline */}
       <section className="timeline-section section">
@@ -349,50 +305,7 @@ const About = () => {
       </section>
 
       {/* Leadership Team */}
-      <section className="team-section section">
-        <div className="container">
-          <motion.div 
-            className="section-header"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-          >
-            <motion.h2 className="section-title" variants={itemVariants}>
-              Leadership Team
-            </motion.h2>
-            <motion.p className="section-subtitle" variants={itemVariants}>
-              Meet the visionaries driving SwachhOn's success
-            </motion.p>
-          </motion.div>
-
-          <motion.div 
-            className="grid grid-4"
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={containerVariants}
-          >
-            {team.map((member, index) => (
-              <motion.div
-                key={index}
-                className="team-card"
-                variants={scaleVariants}
-                whileHover={{ y: -10 }}
-              >
-                <div className="team-image">
-                  <img src={member.image} alt={member.name} />
-                </div>
-                <div className="team-content">
-                  <h3>{member.name}</h3>
-                  <h4>{member.position}</h4>
-                  <p>{member.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+     
 
       {/* CTA Section */}
       <section className="cta-section">

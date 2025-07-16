@@ -161,16 +161,7 @@ const Services = () => {
       title: 'Healthcare',
       description: 'Medical-grade disinfectants and sanitizers.'
     },
-    {
-      icon: <Zap size={40} />,
-      title: 'Energy & Utilities',
-      description: 'Cleaning solutions for power plants and utility infrastructure.'
-    },
-    {
-      icon: <Users size={40} />,
-      title: 'Hospitality',
-      description: 'Commercial cleaning products for hotels and restaurants.'
-    }
+   
   ];
 
   const processSteps = [

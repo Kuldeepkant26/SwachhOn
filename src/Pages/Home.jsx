@@ -88,10 +88,10 @@ const Home = () => {
 
   // Sample data
   const stats = [
-    { number: "50K+", label: "Happy Customers", icon: Users },
+    { number: "500+", label: "Happy Customers", icon: Users },
     { number: "100%", label: "Eco-Friendly", icon: Leaf },
     { number: "24/7", label: "Support Available", icon: Shield },
-    { number: "95%", label: "Satisfaction Rate", icon: Star }
+    { number: "99%", label: "Satisfaction Rate", icon: Star }
   ];
 
   const features = [
@@ -135,21 +135,21 @@ const Home = () => {
 
   const testimonials = [
     {
-      name: "Sarah Johnson",
+      name: "Priya Sharma",
       position: "Business Owner",
       content: "SwachhOn transformed our office environment. Their attention to detail and eco-friendly approach is remarkable.",
       rating: 5,
       avatar: simage2
     },
     {
-      name: "Michael Chen",
+      name: "Rajesh Kumar",
       position: "Residential Customer",
       content: "Exceptional service! They're always on time, professional, and leave our home spotless every single time.",
       rating: 5,
       avatar: simage3
     },
     {
-      name: "Emma Davis",
+      name: "Ananya Patel",
       position: "Property Manager",
       content: "Managing multiple properties is easier with SwachhOn. Their consistency and reliability are unmatched.",
       rating: 5,
