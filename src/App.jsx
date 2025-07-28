@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import Navbar from './Components/Navbar';
+import Navbar from './Components/Navbar_new';
 import Footer from './Components/Footer';
-import Home from './Pages/Home';
+import Home2 from './Pages/Home2';
 import About from './Pages/About';
 import Services from './Pages/Services';
 import './App.css';
@@ -21,7 +21,7 @@ function AppContent() {
       <Navbar />
       <AnimatePresence mode="wait">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home2 />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Services />} />
         </Routes>
