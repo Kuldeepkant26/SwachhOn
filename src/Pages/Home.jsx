@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion';
+import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import {
   ArrowRight,
@@ -38,11 +37,6 @@ const Home = () => {
   const [showSplash, setShowSplash] = useState(false);
   const location = useLocation();
 
-  const heroRef = useRef(null);
-  const statsRef = useRef(null);
-  const featuresRef = useRef(null);
-  const ctaRef = useRef(null);
-
   // Check if this is a page refresh (not navigation)
   useEffect(() => {
     // Check if user has navigated within the app in this session
@@ -68,15 +62,6 @@ const Home = () => {
       }, 4000); // Wait for splash to complete
     }
   }, []);
-
-  const { scrollYProgress } = useScroll();
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.8]);
-
-  const isHeroInView = useInView(heroRef, { once: true });
-  const isStatsInView = useInView(statsRef, { once: true });
-  const isFeaturesInView = useInView(featuresRef, { once: true });
-  const isCtaInView = useInView(ctaRef, { once: true });
 
   // Auto-rotate testimonials
   useEffect(() => {
@@ -184,166 +169,91 @@ const Home = () => {
       
       <div className="home-container">
         {/* Hero Section */}
-        <motion.section
-          ref={heroRef}
-          className="hero-section"
-          style={{ opacity: heroOpacity, scale: heroScale }}
-        >
-        <div className="hero-content">
-          <motion.div
-            className="hero-text"
-            initial={{ opacity: 0, y: 50 }}
-            animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-          
+        <section className="hero-section">
+          <div className="hero-content">
+            <div className="hero-text">
+              <h1 className="hero-title">
+                Transform Your Space with
+                <span className="gradient-text">SwachhOn</span>
+              </h1>
 
-            <motion.h1
-              className="hero-title"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              Transform Your Space with
-              <span className="gradient-text">SwachhOn</span>
-            </motion.h1>
+              <p className="hero-description">
+                Experience the future of cleaning with our eco-friendly, professional services.
+                We bring cleanliness, health, and sustainability to your doorstep.
+              </p>
 
-            <motion.p
-              className="hero-description"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.8 }}
-            >
-              Experience the future of cleaning with our eco-friendly, professional services.
-              We bring cleanliness, health, and sustainability to your doorstep.
-            </motion.p>
-
-            <motion.div
-              className="hero-actions"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isHeroInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 1.0 }}
-            >
-              <button className="cta-primary">
-                <span>Get Started Today</span>
-                <ArrowRight size={20} />
-                <div className="button-glow"></div>
-              </button>
-              
-              <button className="cta-secondary" onClick={() => setIsVideoModalOpen(true)}>
-                <Play size={18} />
-                <span>Watch Demo</span>
-              </button>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            className="hero-visual"
-            initial={{ opacity: 0, x: 50 }}
-            animate={isHeroInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <div className="hero-image-container">
-              <img
-                src={simage1}
-                alt="Professional Cleaning Service"
-                className="hero-image"
-              />
-            
+              <div className="hero-actions">
+                <button className="cta-primary">
+                  <span>Get Started Today</span>
+                  <ArrowRight size={20} />
+                  <div className="button-glow"></div>
+                </button>
+                
+                <button className="cta-secondary" onClick={() => setIsVideoModalOpen(true)}>
+                  <Play size={18} />
+                  <span>Watch Demo</span>
+                </button>
+              </div>
             </div>
 
+            <div className="hero-visual">
+              <div className="hero-image-container">
+                <img
+                  src={simage1}
+                  alt="Professional Cleaning Service"
+                  className="hero-image"
+                />
+              </div>
+            </div>
+          </div>
 
-          </motion.div>
-        </div>
-
-        <motion.div
-          className="scroll-indicator"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <ArrowDown size={24} />
-        </motion.div>
-      </motion.section>
+          <div className="scroll-indicator">
+            <ArrowDown size={24} />
+          </div>
+        </section>
 
       {/* Stats Section */}
-      <motion.section
-        ref={statsRef}
-        className="stats-section"
-        initial={{ opacity: 0 }}
-        animate={isStatsInView ? { opacity: 1 } : {}}
-        transition={{ duration: 0.8 }}
-      >
+      <section className="stats-section">
         <div className="section-container">
           <div className="stats-grid">
             {stats.map((stat, index) => {
               const Icon = stat.icon;
               return (
-                <motion.div
+                <div
                   key={index}
                   className="stat-card"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={isStatsInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{
-                    scale: 1.05,
-                    boxShadow: "0 20px 40px rgba(16, 185, 129, 0.2)"
-                  }}
                 >
                   <div className="stat-icon">
                     <Icon size={32} />
                   </div>
-                  <motion.div
-                    className="stat-number"
-                    initial={{ scale: 0 }}
-                    animate={isStatsInView ? { scale: 1 } : {}}
-                    transition={{
-                      duration: 0.8,
-                      delay: 0.5 + index * 0.1,
-                      type: "spring",
-                      stiffness: 100
-                    }}
-                  >
+                  <div className="stat-number">
                     {stat.number}
-                  </motion.div>
+                  </div>
                   <div className="stat-label">{stat.label}</div>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Features Section */}
-      <motion.section
-        ref={featuresRef}
-        className="features-section"
-        initial={{ opacity: 0 }}
-        animate={isFeaturesInView ? { opacity: 1 } : {}}
-      >
+      <section className="features-section">
         <div className="section-container">
-          <motion.div
-            className="section-header"
-            initial={{ opacity: 0, y: 30 }}
-            animate={isFeaturesInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-          >
+          <div className="section-header">
             <h2 className="section-title">Why Choose SwachhOn?</h2>
             <p className="section-description">
               Discover the features that make us the leading choice for professional cleaning services
             </p>
-          </motion.div>
+          </div>
 
           <div className="features-grid">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
-                <motion.div
+                <div
                   key={index}
                   className="feature-card"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={isFeaturesInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ y: -10 }}
                 >
                   <div className={`feature-icon bg-gradient-to-r ${feature.color}`}>
                     <Icon size={28} />
@@ -353,12 +263,12 @@ const Home = () => {
                   <button className="feature-link">
                     Learn More <ArrowRight size={16} />
                   </button>
-                </motion.div>
+                </div>
               );
             })}
           </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Services Preview */}
       <section className="services-preview">
@@ -372,13 +282,9 @@ const Home = () => {
 
           <div className="services-grid">
             {services.map((service, index) => (
-              <motion.div
+              <div
                 key={index}
                 className="service-card"
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
               >
                 <div className="service-image">
                   <img src={service.image} alt={service.title} />
@@ -392,7 +298,7 @@ const Home = () => {
                   <h3 className="service-title">{service.title}</h3>
                   <p className="service-description">{service.description}</p>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -409,42 +315,36 @@ const Home = () => {
           </div>
 
           <div className="testimonials-container">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={currentTestimonial}
-                className="testimonial-card"
-                initial={{ opacity: 0, x: 100 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -100 }}
-                transition={{ duration: 0.5 }}
-              >
-                <div className="quote-icon">
-                  <Quote size={32} />
-                </div>
+            <div
+              key={currentTestimonial}
+              className="testimonial-card"
+            >
+              <div className="quote-icon">
+                <Quote size={32} />
+              </div>
 
-                <p className="testimonial-text">
-                  "{testimonials[currentTestimonial].content}"
-                </p>
+              <p className="testimonial-text">
+                "{testimonials[currentTestimonial].content}"
+              </p>
 
-                <div className="testimonial-rating">
-                  {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
-                    <Star key={i} size={20} fill="currentColor" />
-                  ))}
-                </div>
+              <div className="testimonial-rating">
+                {[...Array(testimonials[currentTestimonial].rating)].map((_, i) => (
+                  <Star key={i} size={20} fill="currentColor" />
+                ))}
+              </div>
 
-                <div className="testimonial-author">
-                  <img
-                    src={testimonials[currentTestimonial].avatar}
-                    alt={testimonials[currentTestimonial].name}
-                    className="author-avatar"
-                  />
-                  <div>
-                    <div className="author-name">{testimonials[currentTestimonial].name}</div>
-                    <div className="author-position">{testimonials[currentTestimonial].position}</div>
-                  </div>
+              <div className="testimonial-author">
+                <img
+                  src={testimonials[currentTestimonial].avatar}
+                  alt={testimonials[currentTestimonial].name}
+                  className="author-avatar"
+                />
+                <div>
+                  <div className="author-name">{testimonials[currentTestimonial].name}</div>
+                  <div className="author-position">{testimonials[currentTestimonial].position}</div>
                 </div>
-              </motion.div>
-            </AnimatePresence>
+              </div>
+            </div>
 
             <div className="testimonials-nav">
               {testimonials.map((_, index) => (
@@ -460,19 +360,9 @@ const Home = () => {
       </section>
 
       {/* CTA Section */}
-      <motion.section
-        ref={ctaRef}
-        className="cta-section"
-        initial={{ opacity: 0 }}
-        animate={isCtaInView ? { opacity: 1 } : {}}
-      >
+      <section className="cta-section">
         <div className="cta-container">
-          <motion.div
-            className="cta-content"
-            initial={{ opacity: 0, y: 50 }}
-            animate={isCtaInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-          >
+          <div className="cta-content">
             <h2 className="cta-title">Ready to Transform Your Space?</h2>
             <p className="cta-description">
               Join thousands of satisfied customers who trust SwachhOn for their cleaning needs.
@@ -504,41 +394,33 @@ const Home = () => {
                 <span>Available in 50+ Cities</span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
-      </motion.section>
+      </section>
 
       {/* Video Modal */}
-      <AnimatePresence>
-        {isVideoModalOpen && (
-          <motion.div
-            className="video-modal"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsVideoModalOpen(false)}
+      {isVideoModalOpen && (
+        <div
+          className="video-modal"
+          onClick={() => setIsVideoModalOpen(false)}
+        >
+          <div
+            className="video-container"
+            onClick={(e) => e.stopPropagation()}
           >
-            <motion.div
-              className="video-container"
-              initial={{ scale: 0.5, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.5, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
+            <button
+              className="video-close"
+              onClick={() => setIsVideoModalOpen(false)}
             >
-              <button
-                className="video-close"
-                onClick={() => setIsVideoModalOpen(false)}
-              >
-                ×
-              </button>
-              <div className="video-placeholder">
-                <Play size={64} />
-                <p>Demo Video Coming Soon</p>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              ×
+            </button>
+            <div className="video-placeholder">
+              <Play size={64} />
+              <p>Demo Video Coming Soon</p>
+            </div>
+          </div>
+        </div>
+      )}
       </div>
     </>
   );

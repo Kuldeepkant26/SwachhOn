@@ -1,4 +1,11 @@
 /* Footer Styles */
+:root {
+  --gradient-primary: linear-gradient(135deg, #10b981, #059669);
+  --primary-color: #10b981;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+}
+
 .footer {
   background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
   margin-top: auto;
@@ -97,7 +104,8 @@
 /* Main Footer */
 .footer-main {
   padding: 4rem 0 2rem;
-  background: white;
+  background: #ffffff !important;
+  color: #1f2937;
 }
 
 .footer-grid {
@@ -156,16 +164,21 @@
   gap: 1rem;
 }
 
-.contact-item {
+.footer-main .contact-item {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  color: #2563eb;
+  color: #1f2937 !important;
   font-size: 0.95rem;
+  opacity: 1 !important;
 }
 
-.contact-item svg {
-  color: var(--primary-color);
+.footer-main .contact-item span {
+  color: #1f2937 !important;
+}
+
+.footer-main .contact-item svg {
+  color: #10b981 !important;
   flex-shrink: 0;
 }
 

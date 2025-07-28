@@ -58,7 +58,14 @@ body {
     var(--bg-primary) 0%, 
     var(--bg-accent) 50%, 
     var(--light-green) 100%);
-  padding-top: 10vw;
+  padding-top: 120px; /* Increased padding to account for navbar */
+}
+
+@media (max-width: 768px) {
+  .hero-section {
+    padding-top: 100px; /* Adjust for mobile navbar height */
+    min-height: calc(100vh - 60px);
+  }
 }
 
 .hero-content {
@@ -113,18 +120,11 @@ body {
     var(--primary-green) 0%, 
     var(--accent-green) 50%, 
     var(--secondary-green) 100%);
-  background-size: 200% 200%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradient-shift 3s ease-in-out infinite;
   display: block;
   margin-top: 0.5rem;
-}
-
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
 }
 
 .hero-description {
@@ -412,9 +412,9 @@ body {
 }
 
 .stat-card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-2px);
   background: rgba(255, 255, 255, 0.15);
-  box-shadow: var(--shadow-xl);
+  box-shadow: var(--shadow-lg);
 }
 
 .stat-icon {
@@ -483,10 +483,22 @@ body {
   transition: var(--transition);
 }
 
+/* Add subtle hover effects without heavy animations */
 .feature-card:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-2xl);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
   border-color: rgba(16, 185, 129, 0.2);
+}
+
+.service-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: var(--shadow-lg);
 }
 
 .feature-card:hover::before {
@@ -565,8 +577,8 @@ body {
 }
 
 .service-card:hover {
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-2xl);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-xl);
 }
 
 .service-image {
@@ -662,6 +674,8 @@ body {
   border: 1px solid var(--border-light);
   position: relative;
   overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
 }
 
 .testimonial-card::before {
@@ -928,18 +942,26 @@ body {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+  .hero-section {
+    padding-top: 100px; /* Adjust for mobile navbar height */
+    min-height: calc(100vh - 60px);
+  }
+  
   .hero-content {
     grid-template-columns: 1fr;
     gap: 2rem;
     text-align: center;
+    padding-top: 2rem; /* Additional top padding for mobile */
   }
   
   .hero-title {
     font-size: 2.2rem;
+    margin-bottom: 1rem;
   }
   
   .hero-description {
     font-size: 1rem;
+    margin-bottom: 2rem;
   }
   
   .section-title {
@@ -986,6 +1008,15 @@ body {
 }
 
 @media (max-width: 480px) {
+  .hero-section {
+    padding-top: 80px;
+    min-height: calc(100vh - 40px);
+  }
+  
+  .hero-content {
+    padding-top: 1rem;
+  }
+  
   .hero-title {
     font-size: 1.8rem;
   }
