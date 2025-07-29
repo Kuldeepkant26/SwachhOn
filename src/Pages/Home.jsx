@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
-import ContactModal from '../components/ContactModal.jsx'
-import '../css/Home.css'
+import ContactModal from '../Components/ContactModal.jsx'
+import '../Css/Home.css'
 import heroSectionImage from '../assets/heroSectionImage.png'
 
 // Cleaning product images

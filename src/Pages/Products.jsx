@@ -1,6 +1,6 @@
 import React, { useRef, useState } from 'react'
 import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion'
-import '../css/Products.css'
+import '../Css/Products.css'
 
 // Product images (using placeholder URLs)
 const productsHeroImage = 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0'
