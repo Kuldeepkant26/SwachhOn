@@ -1,0 +1,629 @@
+/* ==========================================================================
+   SWACHHON CONTACT MODAL - Premium Professional Design
+   ========================================================================== */
+
+.contact-modal-overlay {
+  --modal-max-width: 680px;
+  --modal-border-radius: 24px;
+  --modal-padding: 2rem;
+  --form-border-radius: 12px;
+  --input-height: 56px;
+  --transition-modal: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   MODAL OVERLAY & BLUR BACKGROUND
+   ========================================================================== */
+
+.contact-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.648);
+  width: 100vw;
+  height: 100vh;
+}
+
+.contact-modal-blur-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(25px) saturate(180%);
+  -webkit-backdrop-filter: blur(25px) saturate(180%);
+  background: rgba(5, 150, 105, 0.02);
+}
+
+/* ==========================================================================
+   MODAL CONTAINER
+   ========================================================================== */
+
+.contact-modal-overlay .contact-modal-container {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: var(--modal-max-width);
+  max-height: 90vh;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-radius: var(--modal-border-radius);
+  box-shadow: 
+    0 32px 80px rgba(5, 150, 105, 0.15),
+    0 16px 40px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   MODAL HEADER
+   ========================================================================== */
+
+.contact-modal-overlay .contact-modal-header {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: var(--modal-padding);
+  padding-bottom: 1.5rem;
+  background: linear-gradient(
+    135deg,
+    rgba(5, 150, 105, 0.05) 0%,
+    rgba(16, 185, 129, 0.03) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  border-bottom: 1px solid rgba(5, 150, 105, 0.08);
+  margin-bottom: 1rem;
+}
+
+.contact-modal-overlay .modal-header-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex: 1;
+}
+
+.contact-modal-overlay .modal-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #059669, #10B981);
+  border-radius: 16px;
+  color: white;
+  box-shadow: 
+    0 8px 24px rgba(5, 150, 105, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.contact-modal-overlay .modal-icon svg {
+  width: 24px;
+  height: 24px;
+}
+
+.contact-modal-overlay .modal-title-section {
+  flex: 1;
+}
+
+.contact-modal-overlay .modal-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, #059669, #10B981);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.contact-modal-overlay .modal-subtitle {
+  font-size: 1rem;
+  color: #6B7280;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.contact-modal-overlay .modal-close-btn {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(5, 150, 105, 0.2);
+  border-radius: 12px;
+  color: #6B7280;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  flex-shrink: 0;
+}
+
+.contact-modal-overlay .modal-close-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #EF4444;
+}
+
+.contact-modal-overlay .modal-close-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* ==========================================================================
+   MODAL BODY
+   ========================================================================== */
+
+.contact-modal-overlay .contact-modal-body {
+  padding: 0 var(--modal-padding) var(--modal-padding);
+  max-height: calc(90vh - 140px);
+  overflow-y: auto;
+}
+
+/* Custom scrollbar */
+.contact-modal-overlay .contact-modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.contact-modal-overlay .contact-modal-body::-webkit-scrollbar-track {
+  background: rgba(5, 150, 105, 0.05);
+  border-radius: 3px;
+}
+
+.contact-modal-overlay .contact-modal-body::-webkit-scrollbar-thumb {
+  background: rgba(5, 150, 105, 0.3);
+  border-radius: 3px;
+}
+
+.contact-modal-overlay .contact-modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(5, 150, 105, 0.5);
+}
+
+/* ==========================================================================
+   SUCCESS MESSAGE
+   ========================================================================== */
+
+.contact-modal-overlay .success-message {
+  text-align: center;
+  padding: 3rem 2rem;
+}
+
+.contact-modal-overlay .success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #10B981, #059669);
+  border-radius: 50%;
+  color: white;
+  box-shadow: 
+    0 12px 32px rgba(16, 185, 129, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.contact-modal-overlay .success-icon svg {
+  width: 36px;
+  height: 36px;
+}
+
+.contact-modal-overlay .success-message h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0 0 1rem 0;
+}
+
+.contact-modal-overlay .success-message p {
+  font-size: 1rem;
+  color: #6B7280;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ==========================================================================
+   CONTACT FORM
+   ========================================================================== */
+
+.contact-modal-overlay .contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contact-modal-overlay .form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.contact-modal-overlay .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.contact-modal-overlay .form-group-full {
+  grid-column: 1 / -1;
+}
+
+.contact-modal-overlay .form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin: 0;
+}
+
+.contact-modal-overlay .form-input,
+.contact-modal-overlay .form-select,
+.contact-modal-overlay .form-textarea {
+  height: var(--input-height);
+  padding: 0 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  border: 1.5px solid rgba(5, 150, 105, 0.15);
+  border-radius: var(--form-border-radius);
+  font-size: 0.95rem;
+  color: #1F2937;
+  transition: var(--transition-smooth);
+  outline: none;
+}
+
+.contact-modal-overlay .form-textarea {
+  height: auto;
+  min-height: 120px;
+  padding: 1rem;
+  resize: vertical;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.contact-modal-overlay .form-input:focus,
+.contact-modal-overlay .form-select:focus,
+.contact-modal-overlay .form-textarea:focus {
+  border-color: #059669;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 
+    0 0 0 3px rgba(5, 150, 105, 0.1),
+    0 4px 12px rgba(5, 150, 105, 0.15);
+}
+
+.contact-modal-overlay .form-input::placeholder,
+.contact-modal-overlay .form-textarea::placeholder {
+  color: #9CA3AF;
+}
+
+.contact-modal-overlay .form-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 3rem;
+  appearance: none;
+}
+
+/* ==========================================================================
+   FORM FOOTER
+   ========================================================================== */
+
+.contact-modal-overlay .form-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(5, 150, 105, 0.08);
+}
+
+.contact-modal-overlay .form-notice {
+  font-size: 0.875rem;
+  color: #6B7280;
+  margin: 0;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.contact-modal-overlay .form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+}
+
+/* ==========================================================================
+   BUTTONS
+   ========================================================================== */
+
+.contact-modal-overlay .btn-secondary,
+.contact-modal-overlay .btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.875rem 1.75rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition-modal);
+  text-decoration: none;
+  min-height: 48px;
+}
+
+.contact-modal-overlay .btn-secondary {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  color: #6B7280;
+  border: 1.5px solid rgba(5, 150, 105, 0.2);
+}
+
+.contact-modal-overlay .btn-secondary:hover {
+  background: rgba(5, 150, 105, 0.05);
+  border-color: rgba(5, 150, 105, 0.3);
+  color: #059669;
+}
+
+.contact-modal-overlay .btn-primary {
+  background: linear-gradient(135deg, #059669, #10B981);
+  color: white;
+  box-shadow: 
+    0 6px 20px rgba(5, 150, 105, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-modal-overlay .btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.6s ease;
+}
+
+.contact-modal-overlay .btn-primary:hover::before {
+  left: 100%;
+}
+
+.contact-modal-overlay .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 30px rgba(5, 150, 105, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.contact-modal-overlay .btn-primary:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.contact-modal-overlay .btn-arrow {
+  width: 16px;
+  height: 16px;
+  transition: var(--transition-smooth);
+}
+
+.contact-modal-overlay .btn-primary:hover .btn-arrow {
+  transform: translateX(3px);
+}
+
+/* Loading Spinner */
+.contact-modal-overlay .loading-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: contact-modal-spin 1s linear infinite;
+}
+
+@keyframes contact-modal-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  .contact-modal-overlay {
+    --modal-padding: 1.5rem;
+    --modal-border-radius: 20px;
+  }
+
+  .contact-modal-overlay {
+    padding: 0.5rem;
+  }
+
+  .contact-modal-overlay .contact-modal-container {
+    max-height: 95vh;
+  }
+
+  .contact-modal-overlay .modal-header-content {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: center;
+    text-align: center;
+  }
+
+  .contact-modal-overlay .modal-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+  }
+
+  .contact-modal-overlay .modal-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .contact-modal-overlay .modal-title {
+    font-size: 1.5rem;
+  }
+
+  .contact-modal-overlay .modal-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .contact-modal-overlay .form-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .contact-modal-overlay .form-actions {
+    flex-direction: column-reverse;
+    gap: 0.75rem;
+  }
+
+  .contact-modal-overlay .btn-secondary,
+  .contact-modal-overlay .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .contact-modal-overlay .contact-modal-body {
+    max-height: calc(95vh - 120px);
+  }
+}
+
+@media (max-width: 480px) {
+  .contact-modal-overlay {
+    --modal-padding: 1rem;
+    --input-height: 50px;
+  }
+
+  .contact-modal-overlay .modal-title {
+    font-size: 1.375rem;
+  }
+
+  .contact-modal-overlay .form-input,
+  .contact-modal-overlay .form-select {
+    font-size: 0.9rem;
+  }
+
+  .contact-modal-overlay .btn-secondary,
+  .contact-modal-overlay .btn-primary {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* ==========================================================================
+   ACCESSIBILITY & PERFORMANCE
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-modal-overlay .contact-modal-container,
+  .contact-modal-overlay .btn-secondary,
+  .contact-modal-overlay .btn-primary,
+  .contact-modal-overlay .form-input,
+  .contact-modal-overlay .form-select,
+  .contact-modal-overlay .form-textarea {
+    transition: none;
+  }
+
+  .contact-modal-overlay .loading-spinner {
+    animation: none;
+  }
+}
+
+@supports not (backdrop-filter: blur(20px)) {
+  .contact-modal-overlay .contact-modal-container {
+    background: rgba(255, 255, 255, 0.98);
+  }
+  
+  .contact-modal-overlay .contact-modal-blur-bg {
+    background: rgba(5, 150, 105, 0.25);
+  }
+  
+  .contact-modal-overlay {
+    background: rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Focus states for accessibility */
+.contact-modal-overlay .modal-close-btn:focus,
+.contact-modal-overlay .form-input:focus,
+.contact-modal-overlay .form-select:focus,
+.contact-modal-overlay .form-textarea:focus,
+.contact-modal-overlay .btn-secondary:focus,
+.contact-modal-overlay .btn-primary:focus {
+  outline: 2px solid #059669;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .contact-modal-overlay .contact-modal-container {
+    background: white;
+    border: 2px solid #059669;
+  }
+  
+  .contact-modal-overlay .form-input,
+  .contact-modal-overlay .form-select,
+  .contact-modal-overlay .form-textarea {
+    border-width: 2px;
+  }
+}
+
+/* ==========================================================================
+   FORMSPREE VALIDATION ERROR STYLES
+   ========================================================================== */
+
+/* ValidationError component styling */
+.contact-modal-overlay .form-group [id^="ValidationError"] {
+  display: block;
+  color: #EF4444;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  background: rgba(239, 68, 68, 0.05);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border-left: 3px solid #EF4444;
+}
+
+/* Error state for form inputs */
+.contact-modal-overlay .form-input:invalid,
+.contact-modal-overlay .form-textarea:invalid {
+  border-color: #EF4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+.contact-modal-overlay .form-input:invalid:focus,
+.contact-modal-overlay .form-textarea:invalid:focus {
+  border-color: #DC2626;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* Success state for form inputs when validation passes */
+.contact-modal-overlay .form-input:valid,
+.contact-modal-overlay .form-textarea:valid {
+  border-color: #10B981;
+}
+
+.contact-modal-overlay .form-input:valid:focus,
+.contact-modal-overlay .form-textarea:valid:focus {
+  border-color: #059669;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
+}

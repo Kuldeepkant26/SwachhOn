@@ -1,42 +1,25 @@
-import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import Navbar from './Components/Navbar_new';
-import Footer from './Components/Footer';
-import Home2 from './Pages/Home2';
-import About from './Pages/About';
-import Services from './Pages/Services';
-import './App.css';
+import React from 'react'
+import Home from './pages/Home'
+import About from './pages/About'
+import Products from './pages/Products'
+import Navbar from './components/Navbar'
+import Footer from './components/Footer'
 
-function AppContent() {
-  const location = useLocation();
-
-  useEffect(() => {
-    // Mark that navigation has occurred whenever route changes
-    window.sessionStorage.setItem('has_navigated', 'true');
-  }, [location]);
-
-  return (
-    <div className="App">
-      <Navbar />
-      <AnimatePresence mode="wait">
-        <Routes>
-          <Route path="/" element={<Home2 />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Services />} />
-        </Routes>
-      </AnimatePresence>
-      <Footer />
-    </div>
-  );
-}
-
+import {Route,Routes} from 'react-router-dom'
+import SplashCursor from '../Reactbits/SplashCursor/SplashCursor'
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
-  );
+    <>
+    <SplashCursor></SplashCursor>
+    <Navbar />
+    <Routes>
+      <Route path='/' element={<Home></Home>}></Route>
+      <Route path='/about' element={<About></About>}></Route>
+      <Route path='/products' element={<Products></Products>}></Route>
+    </Routes>
+    <Footer />
+    </>
+  )
 }
 
-export default App;
+export default App
