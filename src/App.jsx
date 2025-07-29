@@ -6,7 +6,7 @@ import Navbar from './components/Navbar.jsx'
 import Footer from './components/Footer.jsx'
 
 import {Route,Routes} from 'react-router-dom'
-import SplashCursor from '../Reactbits/SplashCursor/SplashCursor'
+import SplashCursor from '../Reactbits/SplashCursor/SplashCursor.jsx'
 function App() {
   return (
     <>
