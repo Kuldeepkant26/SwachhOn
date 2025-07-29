@@ -1,2 +1,18 @@
-node_modules
+# dependencies
+node_modules/
+
+# dotenv environment variables
 .env
+.env.*
+
+# production
+dist/
+build/
+
+# misc
+.DS_Store
+*.log
+
+# local IDE settings
+.vscode/
+.idea/
