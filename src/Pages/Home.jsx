@@ -10,11 +10,11 @@ const CleaningImage2 = 'https://images.unsplash.com/photo-1584464491033-06628f3a
 const CleaningImage3 = 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0';
 
 // Industrial and commercial cleaning images
-const Home1 = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.1.0';
+const Home1 = 'https://res.cloudinary.com/dcxik41sw/image/upload/v1753885644/pexels-photo-10557898_dzqcfl.jpg';
 const Home2 = 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0';
-const Home3 = 'https://images.unsplash.com/photo-1616207133639-cd5e4db9859f?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0';
+
 const Home4 = 'https://images.unsplash.com/photo-1523496922380-91d5afba98a3?q=80&w=2064&auto=format&fit=crop&ixlib=rb-4.1.0';
-const Home5 = 'https://images.pexels.com/photos/32710080/pexels-photo-32710080.jpeg';
+
 const BulkSupplyImage = 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0';
 
 // Dashboard Assets (using placeholder images for cleaning industry)

@@ -66,7 +66,7 @@
 }
 
 .navbar-scrolled .navbar-blur-bg {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.5);
   backdrop-filter: blur(25px) saturate(200%);
   -webkit-backdrop-filter: blur(25px) saturate(200%);
 }
@@ -113,6 +113,18 @@
   gap: 0.75rem;
   text-decoration: none;
   transition: var(--transition-smooth);
+}
+
+.logo-image {
+  height: 45px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+  transition: var(--transition-smooth);
+}
+
+.logo-link:hover .logo-image {
+  transform: scale(1.05);
 }
 
 .logo-icon {

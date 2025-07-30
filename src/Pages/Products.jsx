@@ -1,632 +1,757 @@
-import React, { useRef, useState } from 'react'
-import { motion, useScroll, useTransform, useInView, AnimatePresence } from 'framer-motion'
-import '../Css/Products.css'
-
-// Product images (using placeholder URLs)
-const productsHeroImage = 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0'
-const industrialImage = 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.1.0'
-const commercialImage = 'https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0'
-const sanitizerImage = 'https://images.unsplash.com/photo-1584464491033-06628f3a6b7b?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0'
-const equipmentImage = 'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0'
+import React, { useState, useEffect, useMemo } from 'react'
+import '../css/Products.css'
 
 const Products = () => {
-  const heroRef = useRef(null)
   const [selectedCategory, setSelectedCategory] = useState('all')
-  
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"]
-  })
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedProduct, setSelectedProduct] = useState(null)
+  const [sortBy, setSortBy] = useState('name')
+  const [viewMode, setViewMode] = useState('grid')
+  const [isLoading, setIsLoading] = useState(true)
 
-  const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1])
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.8])
+  // Comprehensive products array with more details
+  const products = [
+    {
+      id: 1, name: 'Phenyl White', category: 'Floor Cleaners', 
+      description: 'Premium white phenyl for spotless floor cleaning with fresh fragrance and antibacterial properties.',
+      features: ['Antibacterial Protection', 'Long-lasting Fragrance', 'Floor-safe Formula', 'Stain Removal', 'Quick Drying'],
+      uses: ['Floor Cleaning', 'Bathroom Cleaning', 'Kitchen Floors', 'Office Spaces'],
+      benefits: ['Kills 99.9% Germs', 'Non-toxic Formula', 'Eco-friendly', 'Cost Effective'],
+      specifications: { volume: '500ml, 1L, 5L', ph: '7-8', concentration: 'Ready to use' },
+      price: 'Starting from ₹50', popular: true
+    },
+    {
+      id: 2, name: 'Phenyl Black', category: 'Floor Cleaners',
+      description: 'Heavy-duty black phenyl for tough stains, industrial cleaning and deep sanitization.',
+      features: ['Extra Strength Formula', 'Industrial Grade', 'Stain Removal', 'Deep Cleaning', 'Long Protection'],
+      uses: ['Industrial Floors', 'Heavy Stains', 'Commercial Spaces', 'Tough Cleaning'],
+      benefits: ['Maximum Strength', 'Long-lasting Effect', 'Professional Grade', 'Versatile Use'],
+      specifications: { volume: '1L, 5L, 20L', ph: '8-9', concentration: 'Concentrated' },
+      price: 'Starting from ₹75', popular: false
+    },
+    {
+      id: 3, name: 'Harpick', category: 'Toilet Cleaners',
+      description: 'Advanced toilet bowl cleaner with powerful germ-killing formula and fresh fragrance.',
+      features: ['Germ Protection', 'Lime Scale Removal', 'Fresh Mint Scent', 'Thick Formula', 'Easy Application'],
+      uses: ['Toilet Bowls', 'Urinals', 'Bathroom Tiles', 'Sink Cleaning'],
+      benefits: ['10X Germ Kill', 'Removes Tough Stains', 'Fresh Fragrance', 'Easy to Use'],
+      specifications: { volume: '200ml, 500ml, 1L', ph: '2-3', concentration: 'Ready to use' },
+      price: 'Starting from ₹65', popular: true
+    },
+    {
+      id: 4, name: 'Calpro', category: 'Specialty Cleaners',
+      description: 'Multi-purpose cleaning solution for various surfaces with advanced cleaning technology.',
+      features: ['Multi-surface Safe', 'Quick Action', 'Safe Formula', 'Residue Free', 'Pleasant Fragrance'],
+      uses: ['Glass Cleaning', 'Metal Surfaces', 'Plastic Items', 'Electronic Devices'],
+      benefits: ['Streak-free Cleaning', 'Safe on All Surfaces', 'Quick Drying', 'No Residue'],
+      specifications: { volume: '250ml, 500ml', ph: '6-7', concentration: 'Ready to use' },
+      price: 'Starting from ₹85', popular: false
+    },
+    {
+      id: 5, name: 'Body Soap Life Boy', category: 'Personal Care',
+      description: 'Antibacterial body soap with natural ingredients for complete family protection.',
+      features: ['10X Germ Protection', 'Natural Ingredients', 'Moisturizing Formula', 'Family Size', 'Dermatologically Tested'],
+      uses: ['Daily Bath', 'Hand Washing', 'Body Cleansing', 'Family Use'],
+      benefits: ['Complete Protection', 'Soft Skin', 'Natural Care', 'Long-lasting'],
+      specifications: { weight: '75g, 125g, 150g', type: 'Bar Soap', ingredients: 'Natural extracts' },
+      price: 'Starting from ₹25', popular: true
+    },
+    {
+      id: 6, name: 'Surf Excel', category: 'Laundry',
+      description: 'Premium laundry detergent with advanced stain removal technology for bright clean clothes.',
+      features: ['Advanced Stain Removal', 'Color Protection', 'Fresh Fragrance', 'Fabric Care', 'Easy Rinse'],
+      uses: ['Machine Wash', 'Hand Wash', 'Tough Stains', 'Daily Laundry'],
+      benefits: ['Removes 100 Stains', 'Keeps Colors Bright', 'Gentle on Fabric', 'Long-lasting Freshness'],
+      specifications: { weight: '500g, 1kg, 4kg', type: 'Powder/Liquid', formula: 'Concentrated' },
+      price: 'Starting from ₹60', popular: true
+    },
+    {
+      id: 7, name: 'Hand Wash Liquid', category: 'Personal Care',
+      description: 'Gentle antibacterial hand wash with moisturizing properties and pleasant fragrance.',
+      features: ['Antibacterial Action', 'Moisturizing Formula', 'Gentle on Skin', 'Rich Lather', 'Pump Dispenser'],
+      uses: ['Hand Cleaning', 'Kitchen Use', 'Bathroom', 'Office Spaces'],
+      benefits: ['Soft Hands', 'Germ Protection', 'No Dryness', 'Easy Dispensing'],
+      specifications: { volume: '200ml, 500ml, 1L', ph: '5.5-6.5', type: 'Liquid' },
+      price: 'Starting from ₹45', popular: false
+    },
+    {
+      id: 8, name: 'Naphthalene Balls', category: 'Pest Control',
+      description: 'Effective mothballs for wardrobe protection against insects and moths.',
+      features: ['Moth Protection', 'Long-lasting Effect', 'Wardrobe Fresh', 'Easy to Use', 'Safe Formula'],
+      uses: ['Wardrobes', 'Storage Areas', 'Closets', 'Drawers'],
+      benefits: ['Protects Clothes', 'Prevents Damage', 'Fresh Smell', 'Long Protection'],
+      specifications: { weight: '100g, 200g', type: 'Balls', duration: '3-6 months' },
+      price: 'Starting from ₹30', popular: false
+    },
+    {
+      id: 9, name: 'Microfiber Mop', category: 'Cleaning Tools',
+      description: 'High-quality microfiber mop for efficient and streak-free floor cleaning.',
+      features: ['Microfiber Technology', 'Easy Rinse', 'Scratch-free', 'Durable Build', '360° Cleaning'],
+      uses: ['Floor Mopping', 'Wet Cleaning', 'Dry Dusting', 'All Floor Types'],
+      benefits: ['Superior Absorption', 'Easy Maintenance', 'Long-lasting', 'Effective Cleaning'],
+      specifications: { material: 'Microfiber', size: 'Standard', handle: 'Adjustable' },
+      price: 'Starting from ₹150', popular: true
+    },
+    {
+      id: 10, name: 'Premium Dustbin', category: 'Cleaning Tools',
+      description: 'Durable waste bins with odor control and easy cleaning features.',
+      features: ['Odor Control', 'Easy Cleaning', 'Durable Plastic', 'Various Sizes', 'Secure Lid'],
+      uses: ['Home Use', 'Office Spaces', 'Kitchen Waste', 'Bathroom'],
+      benefits: ['Hygienic Disposal', 'Easy Maintenance', 'Durable Build', 'Space Efficient'],
+      specifications: { capacity: '5L, 10L, 20L', material: 'High-grade Plastic', type: 'Pedal/Manual' },
+      price: 'Starting from ₹200', popular: false
+    },
+    {
+      id: 11, name: 'Viper Insecticide', category: 'Pest Control',
+      description: 'Fast-acting pest control solution for various insects with long-lasting protection.',
+      features: ['Fast Action', 'Long Protection', 'Safe for Home', 'Multi-insect Control', 'Easy Spray'],
+      uses: ['Flying Insects', 'Crawling Insects', 'Home Protection', 'Garden Use'],
+      benefits: ['Immediate Results', 'Safe Formula', 'Long-lasting', 'Easy Application'],
+      specifications: { volume: '400ml, 600ml', type: 'Aerosol Spray', active: 'Pyrethrin' },
+      price: 'Starting from ₹120', popular: true
+    },
+    {
+      id: 12, name: 'Coconut Broom', category: 'Cleaning Tools',
+      description: 'Traditional eco-friendly coconut broom made from natural coconut fiber.',
+      features: ['100% Natural', 'Eco-friendly', 'Durable Bristles', 'Traditional Design', 'Biodegradable'],
+      uses: ['Floor Sweeping', 'Outdoor Cleaning', 'Garden Cleaning', 'Traditional Cleaning'],
+      benefits: ['Environment Friendly', 'Natural Material', 'Cost Effective', 'Long-lasting'],
+      specifications: { material: 'Coconut Fiber', length: '4ft, 5ft', handle: 'Wooden' },
+      price: 'Starting from ₹80', popular: false
+    },
+    {
+      id: 13, name: 'Multi-purpose Bucket', category: 'Cleaning Tools',
+      description: 'Versatile cleaning buckets with comfortable grip handles and measurement marks.',
+      features: ['Multiple Sizes', 'Comfortable Grip', 'Measurement Marks', 'Durable Build', 'Stack-able Design'],
+      uses: ['Water Storage', 'Cleaning Tasks', 'Mopping', 'Washing'],
+      benefits: ['Versatile Use', 'Easy Handling', 'Space Saving', 'Durable Material'],
+      specifications: { capacity: '5L, 10L, 15L, 20L', material: 'Virgin Plastic', color: 'Multiple' },
+      price: 'Starting from ₹100', popular: true
+    },
+    {
+      id: 14, name: 'Maggi Noodles', category: 'Food Items',
+      description: 'Quick and delicious instant noodles with authentic masala flavor.',
+      features: ['2-minute Cooking', 'Authentic Taste', 'No Added MSG', 'Family Favorite', 'Easy Preparation'],
+      uses: ['Quick Meal', 'Snack Time', 'Emergency Food', 'Kids Meal'],
+      benefits: ['Quick Preparation', 'Tasty Meal', 'Convenient', 'Affordable'],
+      specifications: { weight: '70g per pack', flavors: 'Masala, Chicken, Vegetable', type: 'Instant Noodles' },
+      price: 'Starting from ₹15', popular: true
+    },
+    {
+      id: 15, name: 'Black Phenyl (Commercial)', category: 'Floor Cleaners',
+      description: 'Large pack premium black phenyl specially formulated for commercial and industrial use.',
+      features: ['Commercial Grade', 'Bulk Pack', 'Economic Value', 'High Concentration', 'Professional Formula'],
+      uses: ['Commercial Cleaning', 'Industrial Floors', 'Large Areas', 'Professional Use'],
+      benefits: ['Cost Effective', 'Professional Results', 'Long-lasting', 'Bulk Savings'],
+      specifications: { volume: '5L, 20L, 50L', concentration: '1:10 Dilution', type: 'Concentrated' },
+      price: 'Starting from ₹300', popular: false
+    },
+    {
+      id: 16, name: 'Phenyl Mini Pack', category: 'Floor Cleaners',
+      description: 'Convenient small pack phenyl perfect for home use and travel.',
+      features: ['Compact Size', 'Travel Friendly', 'Home Perfect', 'Easy Storage', 'Value Pack'],
+      uses: ['Home Cleaning', 'Small Areas', 'Travel Use', 'Trial Pack'],
+      benefits: ['Space Saving', 'Convenient', 'Affordable', 'Perfect Size'],
+      specifications: { volume: '100ml, 250ml', type: 'Ready to use', packaging: 'Bottle' },
+      price: 'Starting from ₹25', popular: true
+    },
+    {
+      id: 17, name: 'Cleaning Scraper', category: 'Cleaning Tools',
+      description: 'Multi-purpose scraper tool for removing tough stains and adhesive residues.',
+      features: ['Sharp Edge', 'Ergonomic Handle', 'Multi-use Tool', 'Durable Build', 'Safe Design'],
+      uses: ['Sticker Removal', 'Paint Scraping', 'Adhesive Cleaning', 'Surface Preparation'],
+      benefits: ['Versatile Tool', 'Easy Handling', 'Effective Results', 'Long-lasting'],
+      specifications: { material: 'Stainless Steel', handle: 'Plastic Grip', blade: 'Replaceable' },
+      price: 'Starting from ₹50', popular: false
+    },
+    {
+      id: 18, name: 'Laundry Bar Soap', category: 'Laundry',
+      description: 'Traditional laundry bar soap with natural ingredients for hand washing clothes.',
+      features: ['Natural Ingredients', 'Hand Wash Safe', 'Tough Stain Removal', 'Fabric Safe', 'Economical'],
+      uses: ['Hand Washing', 'Pre-treatment', 'Delicate Fabrics', 'Travel Laundry'],
+      benefits: ['Gentle on Hands', 'Effective Cleaning', 'Natural Formula', 'Cost Effective'],
+      specifications: { weight: '200g, 500g', type: 'Bar Soap', ingredients: 'Natural oils' },
+      price: 'Starting from ₹35', popular: false
+    },
+    {
+      id: 19, name: 'Urinal Deodorizer Cubes', category: 'Specialty Cleaners',
+      description: 'Long-lasting deodorizer cubes specially designed for urinal cleaning and freshening.',
+      features: ['Long-lasting Action', 'Continuous Freshening', 'Hygiene Protection', 'Easy Application', 'Pleasant Fragrance'],
+      uses: ['Urinal Cleaning', 'Odor Control', 'Bathroom Freshening', 'Commercial Toilets'],
+      benefits: ['24/7 Freshness', 'Odor Elimination', 'Easy Maintenance', 'Hygienic Solution'],
+      specifications: { weight: '100g per cube', duration: '1-2 weeks', fragrance: 'Multiple options' },
+      price: 'Starting from ₹40', popular: false
+    },
+    {
+      id: 20, name: 'Heavy Duty Scrubber', category: 'Cleaning Tools',
+      description: 'Industrial-grade scrubbing pad for tough cleaning tasks and heavy-duty applications.',
+      features: ['Extra Tough', 'Non-scratch Design', 'Long-lasting', 'Ergonomic Grip', 'Multi-surface Safe'],
+      uses: ['Heavy Cleaning', 'Industrial Use', 'Kitchen Cleaning', 'Tough Stains'],
+      benefits: ['Maximum Cleaning Power', 'Durable Build', 'Safe on Surfaces', 'Professional Grade'],
+      specifications: { size: '15cm x 10cm', material: 'Abrasive Foam', thickness: '2cm' },
+      price: 'Starting from ₹25', popular: true
+    },
+    {
+      id: 21, name: 'Small Scrubber', category: 'Cleaning Tools',
+      description: 'Compact scrubbing pad perfect for delicate surfaces and detailed cleaning tasks.',
+      features: ['Gentle Cleaning', 'Compact Size', 'Easy Handling', 'Multi-surface Safe', 'Non-abrasive'],
+      uses: ['Delicate Surfaces', 'Kitchen Utensils', 'Glass Cleaning', 'Detail Work'],
+      benefits: ['Gentle on Surfaces', 'Easy to Use', 'Precise Cleaning', 'Versatile'],
+      specifications: { size: '8cm x 6cm', material: 'Soft Foam', thickness: '1cm' },
+      price: 'Starting from ₹15', popular: false
+    },
+    {
+      id: 22, name: 'Toilet Brush', category: 'Cleaning Tools',
+      description: 'Essential toilet brush with ergonomic handle for thorough bathroom cleaning.',
+      features: ['360° Cleaning', 'Ergonomic Handle', 'Durable Bristles', 'Easy Storage', 'Hygienic Design'],
+      uses: ['Toilet Cleaning', 'Bathroom Hygiene', 'Bowl Scrubbing', 'Deep Cleaning'],
+      benefits: ['Complete Cleaning', 'Easy Grip', 'Long-lasting', 'Hygienic'],
+      specifications: { material: 'Plastic Handle + Nylon Bristles', length: '40cm', head: 'Replaceable' },
+      price: 'Starting from ₹45', popular: true
+    },
+    {
+      id: 23, name: 'Room Refresher', category: 'Air Care',
+      description: 'Instant room freshener spray for creating pleasant and lasting fragrance.',
+      features: ['Instant Freshness', 'Long-lasting Fragrance', 'Multiple Scents', 'Easy Spray', 'Non-toxic'],
+      uses: ['Room Freshening', 'Odor Elimination', 'Car Freshening', 'Office Spaces'],
+      benefits: ['Immediate Results', 'Pleasant Aroma', 'Safe Formula', 'Convenient'],
+      specifications: { volume: '300ml, 500ml', type: 'Aerosol Spray', variants: 'Lavender, Rose, Jasmine' },
+      price: 'Starting from ₹95', popular: true
+    },
+    {
+      id: 24, name: 'Air Cleaner', category: 'Air Care',
+      description: 'Advanced air purifying solution for eliminating odors and purifying indoor air.',
+      features: ['Air Purification', 'Odor Elimination', 'Natural Formula', 'Long-lasting Effect', 'Safe for Home'],
+      uses: ['Air Purification', 'Smoke Elimination', 'Pet Odors', 'Kitchen Smells'],
+      benefits: ['Clean Air', 'Odor Control', 'Natural Ingredients', 'Family Safe'],
+      specifications: { volume: '250ml, 500ml', type: 'Spray/Gel', duration: '2-4 weeks' },
+      price: 'Starting from ₹120', popular: false
+    },
+    {
+      id: 25, name: 'Vim Dishwash', category: 'Dishwashing',
+      description: 'Powerful dishwashing liquid that cuts through grease and leaves dishes sparkling clean.',
+      features: ['Grease Cutting Power', 'Gentle on Hands', 'Lemon Fresh', 'Concentrated Formula', 'Easy Rinse'],
+      uses: ['Dishwashing', 'Utensil Cleaning', 'Grease Removal', 'Kitchen Cleaning'],
+      benefits: ['Spotless Dishes', 'Gentle Formula', 'Fresh Scent', 'Economic Use'],
+      specifications: { volume: '250ml, 500ml, 1L', ph: '6-7', concentration: 'Concentrated' },
+      price: 'Starting from ₹35', popular: true
+    },
+    {
+      id: 26, name: 'Acid Cleaner', category: 'Specialty Cleaners',
+      description: 'Industrial-strength acid cleaner for removing tough stains and mineral deposits.',
+      features: ['Heavy Duty Cleaning', 'Stain Removal', 'Mineral Deposit Removal', 'Professional Grade', 'Fast Action'],
+      uses: ['Toilet Cleaning', 'Tile Cleaning', 'Rust Removal', 'Industrial Cleaning'],
+      benefits: ['Maximum Strength', 'Effective Results', 'Professional Use', 'Quick Action'],
+      specifications: { volume: '500ml, 1L', concentration: 'Dilute before use', type: 'Liquid' },
+      price: 'Starting from ₹65', popular: false
+    },
+    {
+      id: 27, name: 'Small Dustbin', category: 'Cleaning Tools',
+      description: 'Compact dustbin perfect for small spaces like bathrooms and bedrooms.',
+      features: ['Compact Design', 'Space Saving', 'Easy Emptying', 'Odor Control', 'Durable Build'],
+      uses: ['Small Spaces', 'Bathroom Waste', 'Bedroom Use', 'Office Desk'],
+      benefits: ['Space Efficient', 'Easy Maintenance', 'Hygienic', 'Convenient Size'],
+      specifications: { capacity: '3L, 5L', material: 'High-grade Plastic', type: 'Manual/Pedal' },
+      price: 'Starting from ₹85', popular: true
+    },
+    {
+      id: 28, name: 'Grass Broom', category: 'Cleaning Tools',
+      description: 'Traditional grass broom made from natural grass for outdoor and heavy-duty cleaning.',
+      features: ['Natural Material', 'Eco-friendly', 'Outdoor Use', 'Durable Bristles', 'Traditional Design'],
+      uses: ['Outdoor Sweeping', 'Garden Cleaning', 'Courtyard Cleaning', 'Heavy Debris'],
+      benefits: ['Environment Friendly', 'Strong Bristles', 'Outdoor Durability', 'Natural'],
+      specifications: { material: 'Natural Grass', length: '4ft, 4.5ft', handle: 'Wooden' },
+      price: 'Starting from ₹70', popular: false
+    },
+    {
+      id: 29, name: 'Small Viper', category: 'Pest Control',
+      description: 'Compact insecticide spray for targeted pest control in small areas.',
+      features: ['Compact Size', 'Targeted Action', 'Quick Results', 'Easy Application', 'Home Safe'],
+      uses: ['Small Areas', 'Targeted Spraying', 'Indoor Use', 'Spot Treatment'],
+      benefits: ['Precise Application', 'Effective Control', 'Convenient Size', 'Quick Action'],
+      specifications: { volume: '200ml, 300ml', type: 'Aerosol Spray', active: 'Pyrethrin' },
+      price: 'Starting from ₹85', popular: false
+    },
+    {
+      id: 30, name: 'Tissue Paper', category: 'Paper Products',
+      description: 'Soft and absorbent tissue paper for daily use and personal hygiene.',
+      features: ['Soft Texture', 'High Absorption', 'Multi-layered', 'Hygienic', 'Convenient Pack'],
+      uses: ['Personal Hygiene', 'Cleaning', 'Kitchen Use', 'General Purpose'],
+      benefits: ['Soft Touch', 'Absorbent', 'Hygienic Use', 'Multi-purpose'],
+      specifications: { sheets: '100, 200 sheets', layers: '2-ply, 3-ply', size: 'Standard' },
+      price: 'Starting from ₹25', popular: true
+    },
+    {
+      id: 31, name: 'Toilet Paper Roll', category: 'Paper Products',
+      description: 'Premium quality toilet paper rolls available in bulk packs for family use.',
+      features: ['Soft & Strong', 'Multi-layered', 'Bulk Pack', 'Value for Money', 'Hygienic'],
+      uses: ['Personal Hygiene', 'Bathroom Use', 'Family Use', 'Commercial Use'],
+      benefits: ['Comfortable Use', 'Economic Pack', 'Reliable Quality', 'Family Size'],
+      specifications: { sheets: '100-200 per roll', layers: '2-ply', pack: '4, 8, 12 rolls' },
+      price: 'Starting from ₹150', popular: true
+    },
+    {
+      id: 32, name: 'Liquid Detergent', category: 'Laundry',
+      description: 'Multi-purpose liquid detergent for effective cleaning of various surfaces.',
+      features: ['Multi-purpose Use', 'Concentrated Formula', 'Easy Pour', 'Pleasant Fragrance', 'Effective Cleaning'],
+      uses: ['Floor Cleaning', 'Surface Cleaning', 'Multi-purpose Cleaning', 'General Cleaning'],
+      benefits: ['Versatile Use', 'Easy Application', 'Effective Results', 'Pleasant Scent'],
+      specifications: { volume: '500ml, 1L, 2L', ph: '7-8', type: 'Liquid concentrate' },
+      price: 'Starting from ₹75', popular: false
+    },
+    {
+      id: 33, name: 'Detergent Powder', category: 'Laundry',
+      description: 'Premium detergent powder with advanced cleaning technology for bright clothes.',
+      features: ['Advanced Formula', 'Stain Removal', 'Color Protection', 'Fresh Fragrance', 'Machine Safe'],
+      uses: ['Machine Wash', 'Hand Wash', 'Tough Stains', 'Daily Laundry'],
+      benefits: ['Deep Cleaning', 'Fabric Care', 'Long-lasting Freshness', 'Color Bright'],
+      specifications: { weight: '500g, 1kg, 3kg', formula: 'Enzyme-based', type: 'Powder' },
+      price: 'Starting from ₹55', popular: true
+    },
+    {
+      id: 34, name: 'Mop Cloth Refill', category: 'Cleaning Tools',
+      description: 'High-quality replacement mop cloth with superior absorption and durability.',
+      features: ['High Absorption', 'Machine Washable', 'Durable Fabric', 'Easy Attachment', 'Reusable'],
+      uses: ['Floor Mopping', 'Wet Cleaning', 'Maintenance', 'Replacement'],
+      benefits: ['Superior Absorption', 'Long-lasting', 'Easy Care', 'Cost Effective'],
+      specifications: { material: 'Microfiber/Cotton', size: 'Standard fit', washable: 'Machine safe' },
+      price: 'Starting from ₹35', popular: false
+    }
+  ];
+
+  // Get unique categories
+  const categories = useMemo(() => {
+    const cats = [...new Set(products.map(product => product.category))];
+    return [{ name: 'All Products', value: 'all', count: products.length }, 
+            ...cats.map(cat => ({ 
+              name: cat, 
+              value: cat.toLowerCase().replace(/\s+/g, '-'), 
+              count: products.filter(p => p.category === cat).length 
+            }))];
+  }, [products]);
+
+  // Filter and sort products
+  const filteredProducts = useMemo(() => {
+    let filtered = products;
+    
+    // Filter by category
+    if (selectedCategory !== 'all') {
+      const categoryName = categories.find(cat => cat.value === selectedCategory)?.name;
+      filtered = filtered.filter(product => product.category === categoryName);
+    }
+    
+    // Filter by search term
+    if (searchTerm) {
+      filtered = filtered.filter(product =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product.features.some(feature => feature.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        product.category.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    // Sort products
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'category':
+          return a.category.localeCompare(b.category);
+        case 'popular':
+          return b.popular - a.popular;
+        default:
+          return 0;
+      }
+    });
+    
+    return filtered;
+  }, [products, selectedCategory, searchTerm, sortBy, categories]);
+
+  // Get related products (same category, excluding current product)
+  const getRelatedProducts = (currentProduct) => {
+    return products
+      .filter(product => 
+        product.category === currentProduct.category && 
+        product.id !== currentProduct.id
+      )
+      .slice(0, 4);
+  };
+
+  // Loading effect
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Close modal on escape
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape' && selectedProduct) {
+        setSelectedProduct(null);
+      }
+    };
+    
+    if (selectedProduct) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
+    }
+    
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [selectedProduct]);
+
+  if (isLoading) {
+    return (
+      <div className="products-loading">
+        <div className="loading-spinner"></div>
+        <p>Loading Premium Products...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="products-page">
       {/* Hero Section */}
-      <section className="products-hero-section" ref={heroRef}>
-        <motion.div 
-          className="products-hero-background"
-          style={{ scale, opacity }}
-        >
-          <img src={productsHeroImage} alt="SwachhOn Products" />
-          <div className="products-hero-overlay"></div>
-        </motion.div>
-        
-        <div className="container">
-          <div className="products-hero-content">
-            <motion.div
-              className="products-hero-text"
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1, delay: 0.2 }}
-            >
-              <motion.h1
-                className="products-hero-title"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                Premium Cleaning Products
-              </motion.h1>
-              
-              <motion.p
-                className="products-hero-description"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-              >
-                Discover our comprehensive range of professional cleaning solutions, 
-                from industrial-grade cleaners to eco-friendly sanitizers.
-              </motion.p>
-              
-              <motion.div
-                className="products-hero-features"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-              >
-                <div className="hero-feature">
-                  <div className="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M12 2L2 7V12C2 18.5 7 22 12 22C17 22 22 18.5 22 12V7L12 2Z" stroke="currentColor" strokeWidth="2"/>
-                      <path d="M8 12L11 15L16 9" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                  </div>
-                  <span>Quality Assured</span>
-                </div>
-                <div className="hero-feature">
-                  <div className="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M21 16V8C21 5.79 19.21 4 17 4H7C4.79 4 3 5.79 3 8V16C3 18.21 4.79 20 7 20H17C19.21 20 21 18.21 21 16Z" stroke="currentColor" strokeWidth="2"/>
-                      <polyline points="7,10 12,15 17,10" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                  </div>
-                  <span>Eco-Friendly</span>
-                </div>
-                <div className="hero-feature">
-                  <div className="feature-icon">
-                    <svg viewBox="0 0 24 24" fill="none">
-                      <path d="M13 10V3L4 14H7V21L16 10H13Z" stroke="currentColor" strokeWidth="2"/>
-                    </svg>
-                  </div>
-                  <span>Fast Delivery</span>
-                </div>
-              </motion.div>
-            </motion.div>
+      <section className="products-hero">
+        <div className="hero-background"></div>
+        <div className="hero-content">
+          <div className="hero-badge">Premium Quality</div>
+          <h1 className="hero-title">
+            Our <span className="gradient-text">Product Range</span>
+          </h1>
+          <p className="hero-subtitle">
+            Discover our comprehensive collection of premium cleaning solutions, 
+            personal care products, and household essentials designed for modern living.
+          </p>
+          <div className="hero-stats">
+            <div className="stat-item">
+              <span className="stat-number">{products.length}+</span>
+              <span className="stat-label">Products</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">{categories.length - 1}</span>
+              <span className="stat-label">Categories</span>
+            </div>
+            <div className="stat-item">
+              <span className="stat-number">100%</span>
+              <span className="stat-label">Quality</span>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Product Categories Section */}
-      <ProductCategoriesSection />
-
-      {/* Featured Products Section */}
-      <FeaturedProductsSection selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-
-      {/* Product Benefits Section */}
-      <ProductBenefitsSection />
-
-      {/* Bulk Supply Section */}
-      <BulkSupplySection />
-    </div>
-  )
-}
-
-// Product Categories Component
-const ProductCategoriesSection = () => {
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
-
-  const categories = [
-    {
-      title: "Industrial Cleaners",
-      description: "Heavy-duty cleaning solutions for industrial applications and manufacturing facilities.",
-      image: industrialImage,
-      features: ["Heavy-duty formulation", "Industrial grade", "Bulk available", "Custom solutions"],
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M3 7V17C3 18.1 3.9 19 5 19H19C20.1 19 21 18.1 21 17V7C21 5.9 20.1 5 19 5H5C3.9 5 3 5.9 3 7Z" stroke="currentColor" strokeWidth="2"/>
-          <path d="M8 11L12 15L16 11" stroke="currentColor" strokeWidth="2"/>
-        </svg>
-      )
-    },
-    {
-      title: "Commercial Solutions",
-      description: "Professional cleaning products designed for offices, retail spaces, and commercial buildings.",
-      image: commercialImage,
-      features: ["Office-friendly", "Multi-surface", "Professional grade", "Cost-effective"],
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M21 16V8C21 5.79 19.21 4 17 4H7C4.79 4 3 5.79 3 8V16C3 18.21 4.79 20 7 20H17C19.21 20 21 18.21 21 16Z" stroke="currentColor" strokeWidth="2"/>
-          <polyline points="7,10 12,15 17,10" stroke="currentColor" strokeWidth="2"/>
-        </svg>
-      )
-    },
-    {
-      title: "Sanitizers & Disinfectants",
-      description: "Advanced sanitizing solutions for maintaining hygiene and preventing contamination.",
-      image: sanitizerImage,
-      features: ["99.9% effective", "Fast-acting", "Safe formulation", "Various formats"],
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none">
-          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2"/>
-          <path d="M19.4 15A1.65 1.65 0 0 0 21 13.35A1.65 1.65 0 0 0 19.4 11.65L18.75 12.3A7 7 0 0 1 12 19A7 7 0 0 1 5.25 12.3L4.6 11.65A1.65 1.65 0 0 0 3 13.35A1.65 1.65 0 0 0 4.6 15L5.25 14.35A7 7 0 0 0 12 21A7 7 0 0 0 18.75 14.35L19.4 15Z" stroke="currentColor" strokeWidth="2"/>
-        </svg>
-      )
-    },
-    {
-      title: "Cleaning Equipment",
-      description: "Professional cleaning equipment and tools for efficient and effective cleaning operations.",
-      image: equipmentImage,
-      features: ["Professional tools", "Durable build", "Ergonomic design", "Easy maintenance"],
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M14.7 6.3C16.1 7.7 16.1 9.9 14.7 11.3L5.1 20.9C4.7 21.3 4.1 21.3 3.7 20.9C3.3 20.5 3.3 19.9 3.7 19.5L13.3 9.9C14.7 8.5 14.7 6.3 13.3 4.9C11.9 3.5 9.7 3.5 8.3 4.9L4.9 8.3C4.5 8.7 3.9 8.7 3.5 8.3C3.1 7.9 3.1 7.3 3.5 6.9L6.9 3.5C9.1 1.3 12.5 1.3 14.7 3.5C16.9 5.7 16.9 9.1 14.7 11.3" stroke="currentColor" strokeWidth="2"/>
-        </svg>
-      )
-    }
-  ]
-
-  return (
-    <section className="product-categories-section" ref={sectionRef}>
-      <div className="container">
-        <motion.div
-          className="section-header"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="section-title">Product Categories</h2>
-          <p className="section-description">
-            Comprehensive cleaning solutions for every industry and application
-          </p>
-        </motion.div>
-
-        <div className="categories-grid">
-          {categories.map((category, index) => (
-            <motion.div
-              key={index}
-              className="category-card"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
-              whileHover={{ y: -10, transition: { duration: 0.3 } }}
-            >
-              <div className="category-image">
-                <img src={category.image} alt={category.title} />
-                <div className="category-overlay">
-                  <div className="category-icon">
-                    {category.icon}
-                  </div>
-                </div>
-              </div>
-              
-              <div className="category-content">
-                <h3 className="category-title">{category.title}</h3>
-                <p className="category-description">{category.description}</p>
-                
-                <div className="category-features">
-                  {category.features.map((feature, featureIndex) => (
-                    <span key={featureIndex} className="feature-tag">
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-                
-                <motion.button 
-                  className="category-btn"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+      {/* Search and Filter Section */}
+      <section className="search-filter-section">
+        <div className="search-filter-container">
+          <div className="search-bar">
+            <div className="search-input-wrapper">
+              <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="11" cy="11" r="8"/>
+                <path d="m21 21-4.35-4.35"/>
+              </svg>
+              <input
+                type="text"
+                placeholder="Search products, features, or categories..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="search-input"
+              />
+              {searchTerm && (
+                <button 
+                  className="clear-search"
+                  onClick={() => setSearchTerm('')}
                 >
-                  View Products
-                  <svg viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
                   </svg>
-                </motion.button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-// Featured Products Component
-const FeaturedProductsSection = ({ selectedCategory, setSelectedCategory }) => {
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
-
-  const filterCategories = [
-    { id: 'all', name: 'All Products' },
-    { id: 'industrial', name: 'Industrial' },
-    { id: 'commercial', name: 'Commercial' },
-    { id: 'sanitizers', name: 'Sanitizers' },
-    { id: 'equipment', name: 'Equipment' }
-  ]
-
-  const products = [
-    {
-      id: 1,
-      name: "HeavyDuty Pro Cleaner",
-      category: "industrial",
-      price: "$89.99",
-      rating: 4.8,
-      image: industrialImage,
-      features: ["Industrial Grade", "Concentrated Formula", "Multi-Surface"],
-      description: "Professional-grade industrial cleaner for heavy-duty applications."
-    },
-    {
-      id: 2,
-      name: "Office Clean Plus",
-      category: "commercial",
-      price: "$34.99",
-      rating: 4.6,
-      image: commercialImage,
-      features: ["Office-Friendly", "Non-Toxic", "Quick-Dry"],
-      description: "Perfect cleaning solution for offices and commercial spaces."
-    },
-    {
-      id: 3,
-      name: "SafeGuard Sanitizer",
-      category: "sanitizers",
-      price: "$24.99",
-      rating: 4.9,
-      image: sanitizerImage,
-      features: ["99.9% Effective", "Alcohol-Based", "Fast-Acting"],
-      description: "Advanced sanitizer for maximum protection against germs."
-    },
-    {
-      id: 4,
-      name: "ProClean Equipment Kit",
-      category: "equipment",
-      price: "$149.99",
-      rating: 4.7,
-      image: equipmentImage,
-      features: ["Professional Tools", "Durable", "Complete Kit"],
-      description: "Complete cleaning equipment kit for professional use."
-    },
-    {
-      id: 5,
-      name: "EcoClean Industrial",
-      category: "industrial",
-      price: "$67.99",
-      rating: 4.5,
-      image: industrialImage,
-      features: ["Eco-Friendly", "Biodegradable", "Industrial Strength"],
-      description: "Environmentally friendly industrial cleaning solution."
-    },
-    {
-      id: 6,
-      name: "UltraShine Commercial",
-      category: "commercial",
-      price: "$29.99",
-      rating: 4.4,
-      image: commercialImage,
-      features: ["Streak-Free", "Multi-Surface", "Pleasant Scent"],
-      description: "Premium commercial cleaner for superior results."
-    }
-  ]
-
-  const filteredProducts = selectedCategory === 'all' 
-    ? products 
-    : products.filter(product => product.category === selectedCategory)
-
-  return (
-    <section className="featured-products-section" ref={sectionRef}>
-      <div className="container">
-        <motion.div
-          className="section-header"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="section-title">Featured Products</h2>
-          <p className="section-description">
-            Discover our most popular and effective cleaning solutions
-          </p>
-        </motion.div>
-
-        {/* Filter Tabs */}
-        <motion.div
-          className="product-filters"
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          {filterCategories.map((category) => (
-            <motion.button
-              key={category.id}
-              className={`filter-btn ${selectedCategory === category.id ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category.id)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-            >
-              {category.name}
-            </motion.button>
-          ))}
-        </motion.div>
-
-        {/* Products Grid */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={selectedCategory}
-            className="products-grid"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-          >
-            {filteredProducts.map((product, index) => (
-              <motion.div
-                key={product.id}
-                className="product-card"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
+                </button>
+              )}
+            </div>
+          </div>
+          
+          <div className="filter-controls">
+            <div className="sort-control">
+              <label htmlFor="sort-select">Sort by:</label>
+              <select 
+                id="sort-select"
+                value={sortBy}
+                onChange={(e) => setSortBy(e.target.value)}
+                className="sort-select"
               >
-                <div className="product-image">
-                  <img src={product.image} alt={product.name} />
-                  <div className="product-badge">
-                    <span className="rating">
-                      <svg viewBox="0 0 20 20" fill="currentColor">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                <option value="name">Name</option>
+                <option value="category">Category</option>
+                <option value="popular">Popular First</option>
+              </select>
+            </div>
+            
+            <div className="view-toggle">
+              <button 
+                className={`view-btn ${viewMode === 'grid' ? 'active' : ''}`}
+                onClick={() => setViewMode('grid')}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <rect x="3" y="3" width="7" height="7"/>
+                  <rect x="14" y="3" width="7" height="7"/>
+                  <rect x="14" y="14" width="7" height="7"/>
+                  <rect x="3" y="14" width="7" height="7"/>
+                </svg>
+              </button>
+              <button 
+                className={`view-btn ${viewMode === 'list' ? 'active' : ''}`}
+                onClick={() => setViewMode('list')}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="8" y1="6" x2="21" y2="6"/>
+                  <line x1="8" y1="12" x2="21" y2="12"/>
+                  <line x1="8" y1="18" x2="21" y2="18"/>
+                  <line x1="3" y1="6" x2="3.01" y2="6"/>
+                  <line x1="3" y1="12" x2="3.01" y2="12"/>
+                  <line x1="3" y1="18" x2="3.01" y2="18"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="categories-section">
+        <div className="categories-container">
+          <div className="categories-scroll">
+            {categories.map((category) => (
+              <button
+                key={category.value}
+                className={`category-btn ${selectedCategory === category.value ? 'active' : ''}`}
+                onClick={() => setSelectedCategory(category.value)}
+              >
+                <span className="category-name">{category.name}</span>
+                <span className="category-count">{category.count}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Products Section */}
+      <section className="products-section">
+        <div className="products-container">
+          <div className="section-header">
+            <h2 className="section-title">
+              {selectedCategory === 'all' ? 'All Products' : 
+               categories.find(cat => cat.value === selectedCategory)?.name || 'Products'}
+            </h2>
+            <div className="results-info">
+              {filteredProducts.length} {filteredProducts.length === 1 ? 'product' : 'products'} found
+              {searchTerm && ` for "${searchTerm}"`}
+            </div>
+          </div>
+
+          {filteredProducts.length === 0 ? (
+            <div className="no-results">
+              <div className="no-results-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.35-4.35"/>
+                </svg>
+              </div>
+              <h3>No products found</h3>
+              <p>Try adjusting your search or filter criteria</p>
+              <button 
+                className="clear-filters-btn"
+                onClick={() => {
+                  setSearchTerm('');
+                  setSelectedCategory('all');
+                }}
+              >
+                Clear all filters
+              </button>
+            </div>
+          ) : (
+            <div className={`products-grid ${viewMode}`}>
+              {filteredProducts.map((product) => (
+                <div 
+                  key={product.id} 
+                  className={`product-card ${product.popular ? 'popular' : ''}`}
+                  onClick={() => setSelectedProduct(product)}
+                >
+                  {product.popular && <div className="popular-badge">Popular</div>}
+                  
+                  <div className="product-header">
+                    <div className="category-badge">{product.category}</div>
+                    <div className="product-price">{product.price}</div>
+                  </div>
+                  
+                  <div className="product-content">
+                    <h3 className="product-name">{product.name}</h3>
+                    <p className="product-description">{product.description}</p>
+                    
+                    <div className="product-features">
+                      {product.features.slice(0, 3).map((feature, index) => (
+                        <span key={index} className="feature-tag">{feature}</span>
+                      ))}
+                      {product.features.length > 3 && (
+                        <span className="more-features">+{product.features.length - 3} more</span>
+                      )}
+                    </div>
+                  </div>
+                  
+                  <div className="product-footer">
+                    <button className="view-details-btn">
+                      View Details
+                      <svg className="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="m9 18 6-6-6-6"/>
                       </svg>
-                      {product.rating}
-                    </span>
+                    </button>
                   </div>
                 </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
 
-                <div className="product-content">
-                  <h3 className="product-name">{product.name}</h3>
-                  <p className="product-description">{product.description}</p>
-                  
-                  <div className="product-features">
-                    {product.features.map((feature, featureIndex) => (
-                      <span key={featureIndex} className="product-feature-tag">
-                        {feature}
-                      </span>
+      {/* Product Detail Modal */}
+      {selectedProduct && (
+        <div className="product-modal-overlay" onClick={() => setSelectedProduct(null)}>
+          <div className="product-modal-blur"></div>
+          <div className="product-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <div className="modal-header-content">
+                <div className="product-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M9 12l2 2 4-4"/>
+                    <circle cx="12" cy="12" r="10"/>
+                  </svg>
+                </div>
+                <div className="product-info">
+                  <h2 className="modal-title">{selectedProduct.name}</h2>
+                  <div className="modal-meta">
+                    <span className="modal-category">{selectedProduct.category}</span>
+                    <span className="modal-price">{selectedProduct.price}</span>
+                  </div>
+                </div>
+              </div>
+              <button 
+                className="modal-close"
+                onClick={() => setSelectedProduct(null)}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+              </button>
+            </div>
+
+            <div className="modal-body">
+              <div className="product-details">
+                <div className="detail-section">
+                  <h3 className="detail-title">Description</h3>
+                  <p className="detail-content">{selectedProduct.description}</p>
+                </div>
+
+                <div className="detail-section">
+                  <h3 className="detail-title">Key Features</h3>
+                  <div className="features-grid">
+                    {selectedProduct.features.map((feature, index) => (
+                      <div key={index} className="feature-item">
+                        <svg className="feature-icon" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                        <span>{feature}</span>
+                      </div>
                     ))}
                   </div>
+                </div>
 
-                  <div className="product-footer">
-                    <div className="product-price">{product.price}</div>
-                    <motion.button 
-                      className="add-to-cart-btn"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Add to Cart
-                    </motion.button>
+                <div className="detail-section">
+                  <h3 className="detail-title">Common Uses</h3>
+                  <div className="uses-list">
+                    {selectedProduct.uses.map((use, index) => (
+                      <span key={index} className="use-tag">{use}</span>
+                    ))}
                   </div>
                 </div>
-              </motion.div>
-            ))}
-          </motion.div>
-        </AnimatePresence>
-      </div>
-    </section>
-  )
-}
 
-// Product Benefits Component
-const ProductBenefitsSection = () => {
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
+                <div className="detail-section">
+                  <h3 className="detail-title">Benefits</h3>
+                  <div className="benefits-list">
+                    {selectedProduct.benefits.map((benefit, index) => (
+                      <div key={index} className="benefit-item">
+                        <svg className="benefit-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <polyline points="20,6 9,17 4,12"/>
+                        </svg>
+                        <span>{benefit}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-  const benefits = [
-    {
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 2L2 7V12C2 18.5 7 22 12 22C17 22 22 18.5 22 12V7L12 2Z" stroke="currentColor" strokeWidth="2"/>
-          <path d="M8 12L11 15L16 9" stroke="currentColor" strokeWidth="2"/>
-        </svg>
-      ),
-      title: "Quality Guaranteed",
-      description: "All products undergo rigorous testing to ensure maximum effectiveness and safety."
-    },
-    {
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M21 16V8C21 5.79 19.21 4 17 4H7C4.79 4 3 5.79 3 8V16C3 18.21 4.79 20 7 20H17C19.21 20 21 18.21 21 16Z" stroke="currentColor" strokeWidth="2"/>
-          <polyline points="7,10 12,15 17,10" stroke="currentColor" strokeWidth="2"/>
-        </svg>
-      ),
-      title: "Eco-Friendly Formula",
-      description: "Environmentally responsible products that don't compromise on cleaning power."
-    },
-    {
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M13 10V3L4 14H7V21L16 10H13Z" stroke="currentColor" strokeWidth="2"/>
-        </svg>
-      ),
-      title: "Fast & Effective",
-      description: "Quick-acting formulations that deliver superior results in minimal time."
-    },
-    {
-      icon: (
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L15 6.5C14.8 6.2 14.5 6 14.2 5.8L13 3H11L9.8 5.8C9.5 6 9.2 6.2 9 6.5L3 7V9L9 9.5C9.2 9.8 9.5 10 9.8 10.2L11 13H13L14.2 10.2C14.5 10 14.8 9.8 15 9.5L21 9Z" stroke="currentColor" strokeWidth="2"/>
-        </svg>
-      ),
-      title: "Cost-Effective",
-      description: "Concentrated formulas provide exceptional value and reduce overall cleaning costs."
-    }
-  ]
-
-  return (
-    <section className="product-benefits-section" ref={sectionRef}>
-      <div className="container">
-        <motion.div
-          className="section-header"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="section-title">Why Choose Our Products</h2>
-          <p className="section-description">
-            Experience the difference with our premium cleaning solutions
-          </p>
-        </motion.div>
-
-        <div className="benefits-grid">
-          {benefits.map((benefit, index) => (
-            <motion.div
-              key={index}
-              className="benefit-card"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
-              whileHover={{ y: -5, transition: { duration: 0.3 } }}
-            >
-              <div className="benefit-icon">
-                {benefit.icon}
+                <div className="detail-section">
+                  <h3 className="detail-title">Specifications</h3>
+                  <div className="specs-grid">
+                    {Object.entries(selectedProduct.specifications).map(([key, value]) => (
+                      <div key={key} className="spec-item">
+                        <span className="spec-label">{key.charAt(0).toUpperCase() + key.slice(1)}:</span>
+                        <span className="spec-value">{value}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <h3 className="benefit-title">{benefit.title}</h3>
-              <p className="benefit-description">{benefit.description}</p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
 
-// Bulk Supply Component
-const BulkSupplySection = () => {
-  const sectionRef = useRef(null)
-  const isInView = useInView(sectionRef, { once: true, margin: "-100px" })
+              {/* Related Products */}
+              {getRelatedProducts(selectedProduct).length > 0 && (
+                <div className="related-products">
+                  <h3 className="related-title">Related Products</h3>
+                  <div className="related-grid">
+                    {getRelatedProducts(selectedProduct).map((relatedProduct) => (
+                      <div 
+                        key={relatedProduct.id}
+                        className="related-card"
+                        onClick={() => setSelectedProduct(relatedProduct)}
+                      >
+                        <h4 className="related-name">{relatedProduct.name}</h4>
+                        <p className="related-price">{relatedProduct.price}</p>
+                        <div className="related-features">
+                          {relatedProduct.features.slice(0, 2).map((feature, index) => (
+                            <span key={index} className="related-feature">{feature}</span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
 
-  return (
-    <section className="bulk-supply-section" ref={sectionRef}>
-      <div className="container">
-        <div className="bulk-supply-layout">
-          <motion.div
-            className="bulk-supply-content"
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
-          >
-            <motion.div
-              className="bulk-tag"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.2 }}
-            >
-              Bulk Supply
-            </motion.div>
-
-            <motion.h2
-              className="bulk-title"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
-            >
-              Volume Discounts Available
-            </motion.h2>
-
-            <motion.p
-              className="bulk-description"
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              Save more with our bulk supply options. Perfect for large facilities, 
-              cleaning companies, and businesses with high-volume needs. Custom 
-              packaging and delivery solutions available.
-            </motion.p>
-
-            <motion.div
-              className="bulk-features"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.5 }}
-            >
-              <div className="bulk-feature">
-                <div className="bulk-feature-icon">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2Z" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M12 6V22" stroke="currentColor" strokeWidth="2"/>
-                    <path d="M8 10L12 6L16 10" stroke="currentColor" strokeWidth="2"/>
+              <div className="modal-actions">
+                <button className="action-btn primary">
+                  <svg className="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/>
                   </svg>
-                </div>
-                <div className="bulk-feature-content">
-                  <h4>Volume Discounts</h4>
-                  <p>Up to 30% savings on bulk orders</p>
-                </div>
-              </div>
-
-              <div className="bulk-feature">
-                <div className="bulk-feature-icon">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M1 3H5L7 13H17L21 5H9" stroke="currentColor" strokeWidth="2"/>
-                    <circle cx="9" cy="20" r="1" stroke="currentColor" strokeWidth="2"/>
-                    <circle cx="20" cy="20" r="1" stroke="currentColor" strokeWidth="2"/>
+                  Request Quote
+                </button>
+                <button className="action-btn secondary">
+                  <svg className="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                   </svg>
-                </div>
-                <div className="bulk-feature-content">
-                  <h4>Custom Packaging</h4>
-                  <p>Tailored packaging solutions</p>
-                </div>
-              </div>
-
-              <div className="bulk-feature">
-                <div className="bulk-feature-icon">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M13 10V3L4 14H7V21L16 10H13Z" stroke="currentColor" strokeWidth="2"/>
+                  Contact Us
+                </button>
+                <button className="action-btn tertiary">
+                  <svg className="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
                   </svg>
-                </div>
-                <div className="bulk-feature-content">
-                  <h4>Fast Delivery</h4>
-                  <p>Reliable logistics and delivery</p>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              className="bulk-cta"
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.6 }}
-            >
-              <motion.button 
-                className="bulk-btn primary"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Get Bulk Quote
-              </motion.button>
-              <motion.button 
-                className="bulk-btn secondary"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                View Catalog
-              </motion.button>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            className="bulk-supply-image"
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <div className="bulk-image-wrapper">
-              <img src={productsHeroImage} alt="Bulk Supply" />
-              <div className="bulk-image-badge">
-                <span className="badge-text">30%</span>
-                <span className="badge-subtext">Bulk Savings</span>
+                  Add to Wishlist
+                </button>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
-      </div>
-    </section>
-  )
-}
+      )}
+    </div>
+  );
+};
 
-export default Products
+export default Products;
