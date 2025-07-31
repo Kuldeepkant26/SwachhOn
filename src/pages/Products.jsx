@@ -7,7 +7,7 @@ const Products = () => {
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [sortBy, setSortBy] = useState('name')
   const [viewMode, setViewMode] = useState('grid')
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
 
   // Comprehensive products array with more details
   const products = [
