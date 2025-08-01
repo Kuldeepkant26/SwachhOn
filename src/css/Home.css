@@ -50,15 +50,6 @@
   background: var(--primary-white);
 }
 
-/* PERFORMANCE OPTIMIZATION - Disable all animations and transitions */
-.home *,
-.home *::before,
-.home *::after {
-  transition: none !important;
-  animation: none !important;
-  transform: none !important;
-}
-
 .home .container {
   max-width: 1400px;
   margin: 0 auto;
