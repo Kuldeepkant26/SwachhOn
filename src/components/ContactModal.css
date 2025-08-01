@@ -8,8 +8,6 @@
   --modal-padding: 2rem;
   --form-border-radius: 12px;
   --input-height: 56px;
-  --transition-modal: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* ==========================================================================
@@ -27,10 +25,9 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  
   width: 100vw;
   height: 100vh;
-  
+  background: rgba(0, 0, 0, 0.5);
 }
 
 .contact-modal-blur-bg {
@@ -39,9 +36,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  backdrop-filter: blur(25px) saturate(180%);
-  -webkit-backdrop-filter: blur(25px) saturate(180%);
-  background: rgba(5, 150, 105, 0.02);
+  background: rgba(255, 255, 255, 0.2); /* semi-transparent */
+  backdrop-filter: blur(10px); /* blur effect */
+  -webkit-backdrop-filter: blur(10px); /* for Safari */
+  
 }
 
 /* ==========================================================================
@@ -54,15 +52,10 @@
   width: 100%;
   max-width: var(--modal-max-width);
   max-height: 90vh;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(20px) saturate(180%);
-  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background: white;
   border-radius: var(--modal-border-radius);
-  box-shadow: 
-    0 32px 80px rgba(5, 150, 105, 0.15),
-    0 16px 40px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.9);
-  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  border: 1px solid #e5e7eb;
   overflow: hidden;
 }
 
@@ -143,13 +136,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(5, 150, 105, 0.2);
+  background: #f9fafb;
+  border: 1px solid #d1d5db;
   border-radius: 12px;
   color: #6B7280;
   cursor: pointer;
-  transition: var(--transition-smooth);
   flex-shrink: 0;
 }
 
@@ -275,13 +266,11 @@
 .contact-modal-overlay .form-textarea {
   height: var(--input-height);
   padding: 0 1rem;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border: 1.5px solid rgba(5, 150, 105, 0.15);
+  background: white;
+  border: 1.5px solid #d1d5db;
   border-radius: var(--form-border-radius);
   font-size: 0.95rem;
   color: #1F2937;
-  transition: var(--transition-smooth);
   outline: none;
 }
 
@@ -298,10 +287,8 @@
 .contact-modal-overlay .form-select:focus,
 .contact-modal-overlay .form-textarea:focus {
   border-color: #059669;
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 
-    0 0 0 3px rgba(5, 150, 105, 0.1),
-    0 4px 12px rgba(5, 150, 105, 0.15);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(5, 150, 105, 0.1);
 }
 
 .contact-modal-overlay .form-input::placeholder,
@@ -361,16 +348,14 @@
   border-radius: 12px;
   border: none;
   cursor: pointer;
-  transition: var(--transition-modal);
   text-decoration: none;
   min-height: 48px;
 }
 
 .contact-modal-overlay .btn-secondary {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
+  background: white;
   color: #6B7280;
-  border: 1.5px solid rgba(5, 150, 105, 0.2);
+  border: 1.5px solid #d1d5db;
 }
 
 .contact-modal-overlay .btn-secondary:hover {
@@ -390,22 +375,10 @@
 }
 
 .contact-modal-overlay .btn-primary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.6s ease;
-}
-
-.contact-modal-overlay .btn-primary:hover::before {
-  left: 100%;
+  display: none;
 }
 
 .contact-modal-overlay .btn-primary:hover {
-  transform: translateY(-2px);
   box-shadow: 
     0 8px 30px rgba(5, 150, 105, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
@@ -414,17 +387,11 @@
 .contact-modal-overlay .btn-primary:disabled {
   opacity: 0.7;
   cursor: not-allowed;
-  transform: none;
 }
 
 .contact-modal-overlay .btn-arrow {
   width: 16px;
   height: 16px;
-  transition: var(--transition-smooth);
-}
-
-.contact-modal-overlay .btn-primary:hover .btn-arrow {
-  transform: translateX(3px);
 }
 
 /* Loading Spinner */
@@ -434,12 +401,6 @@
   border: 2px solid rgba(255, 255, 255, 0.3);
   border-top: 2px solid white;
   border-radius: 50%;
-  animation: contact-modal-spin 1s linear infinite;
-}
-
-@keyframes contact-modal-spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 
 /* ==========================================================================
@@ -533,32 +494,21 @@
    ACCESSIBILITY & PERFORMANCE
    ========================================================================== */
 
-@media (prefers-reduced-motion: reduce) {
-  .contact-modal-overlay .contact-modal-container,
-  .contact-modal-overlay .btn-secondary,
-  .contact-modal-overlay .btn-primary,
-  .contact-modal-overlay .form-input,
-  .contact-modal-overlay .form-select,
-  .contact-modal-overlay .form-textarea {
-    transition: none;
-  }
-
-  .contact-modal-overlay .loading-spinner {
-    animation: none;
-  }
+/* Remove all animations and transitions for better performance */
+.contact-modal-overlay *,
+.contact-modal-overlay *::before,
+.contact-modal-overlay *::after {
+  transition: none !important;
+  animation: none !important;
 }
 
 @supports not (backdrop-filter: blur(20px)) {
   .contact-modal-overlay .contact-modal-container {
-    background: rgba(255, 255, 255, 0.98);
-  }
-  
-  .contact-modal-overlay .contact-modal-blur-bg {
-    background: rgba(5, 150, 105, 0.25);
+    background: white;
   }
   
   .contact-modal-overlay {
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.5);
   }
 }
 
