@@ -1,0 +1,28 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://swachhon.com/sitemap.xml
+
+# Allow all crawlers
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Crawl-delay for respectful crawling
+Crawl-delay: 1
+
+# Allow specific important pages
+Allow: /about
+Allow: /products
+Allow: /
+
+# Block any admin or development files (if any in future)
+Disallow: /admin/
+Disallow: /*.json$
+Disallow: /api/

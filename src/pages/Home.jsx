@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import ContactModal from '../components/ContactModal.jsx'
+import SEOHead from '../components/SEOHead.jsx'
+import FAQ from '../components/FAQ.jsx'
 import '../css/Home.css'
 import heroSectionImage from '../assets/heroSectionImage.png'
 
@@ -42,8 +44,61 @@ const Home = ({ showAnimation = false }) => {
     setIsContactModalOpen(true)
   }
 
+  const homeStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "SwachhOn",
+    "description": "Professional cleaning solutions and bulk cleaning products for commercial and industrial use in India.",
+    "url": "https://swachhon.com",
+    "image": "https://swachhon.com/public/SwachhOn_icon.png",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "IN"
+    },
+    "openingHours": "Mo-Fr 09:00-18:00",
+    "serviceArea": {
+      "@type": "Place",
+      "name": "India"
+    },
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Cleaning Products and Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Product",
+            "name": "Industrial Cleaning Products"
+          }
+        },
+        {
+          "@type": "Offer", 
+          "itemOffered": {
+            "@type": "Product",
+            "name": "Commercial Cleaning Equipment"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Product", 
+            "name": "Bulk Cleaning Supplies"
+          }
+        }
+      ]
+    }
+  };
+
   return (
     <div className="home">
+      <SEOHead 
+        title="SwachhOn - Professional Bulk Cleaning Solutions | Commercial & Industrial Cleaning Products"
+        description="SwachhOn offers premium quality cleaning products, industrial cleaning solutions, and commercial cleaning equipment. Get bulk cleaning supplies for businesses across India. Contact us for customized cleaning solutions."
+        keywords="SwachhOn, cleaning products, industrial cleaning, commercial cleaning, bulk cleaning supplies, cleaning equipment, professional cleaning solutions, cleaning company India, cleaning services, hygiene products, sanitizers, disinfectants"
+        url="https://swachhon.com/"
+        structuredData={homeStructuredData}
+      />
       {/* Hero Section - Creative Agency Style */}
       <section className="hero-section" ref={heroRef}>
         <div className="container">
@@ -258,6 +313,9 @@ const Home = ({ showAnimation = false }) => {
 
       {/* Dashboard Showcase Section */}
       <DashboardShowcaseSection />
+
+      {/* FAQ Section for better SEO */}
+      <FAQ />
 
       {/* Contact Modal */}
       <ContactModal 

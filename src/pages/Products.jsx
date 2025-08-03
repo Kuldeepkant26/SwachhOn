@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react'
+import SEOHead from '../components/SEOHead.jsx'
 import '../css/Products.css'
 
 const Products = () => {
@@ -411,8 +412,40 @@ const Products = () => {
     );
   }
 
+  const productsStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "SwachhOn Products - Professional Cleaning Solutions",
+    "description": "Browse our comprehensive range of professional cleaning products including floor cleaners, toilet cleaners, disinfectants, and specialty cleaning solutions for commercial and industrial use.",
+    "url": "https://swachhon.com/products",
+    "mainEntity": {
+      "@type": "ItemList",
+      "numberOfItems": products.length,
+      "itemListElement": products.slice(0, 5).map((product, index) => ({
+        "@type": "Product",
+        "position": index + 1,
+        "name": product.name,
+        "description": product.description,
+        "category": product.category,
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "INR",
+          "price": product.price,
+          "availability": "https://schema.org/InStock"
+        }
+      }))
+    }
+  };
+
   return (
     <div className="products-page">
+      <SEOHead 
+        title="SwachhOn Products - Professional Cleaning Solutions | Floor Cleaners, Disinfectants & More"
+        description="Browse our comprehensive range of professional cleaning products including floor cleaners, toilet cleaners, disinfectants, and specialty cleaning solutions for commercial and industrial use in India."
+        keywords="SwachhOn products, cleaning products catalog, floor cleaners, toilet cleaners, disinfectants, sanitizers, industrial cleaning products, commercial cleaning supplies, bulk cleaning products, phenyl, harpick, cleaning chemicals"
+        url="https://swachhon.com/products"
+        structuredData={productsStructuredData}
+      />
       {/* Hero Section */}
       <section className="products-hero">
         <div className="hero-background"></div>

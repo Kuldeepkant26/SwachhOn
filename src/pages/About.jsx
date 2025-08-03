@@ -1,5 +1,6 @@
 import React, { useRef } from 'react'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
+import SEOHead from '../components/SEOHead.jsx'
 import '../css/About.css'
 
 // Import images (using placeholder URLs for now)
@@ -19,8 +20,33 @@ const About = () => {
   const scale = useTransform(scrollYProgress, [0, 1], [1, 1.1])
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.8])
 
+  const aboutStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About SwachhOn - Professional Cleaning Solutions Company",
+    "description": "Learn about SwachhOn's mission to provide professional cleaning solutions, our expertise in industrial and commercial cleaning products, and our commitment to quality.",
+    "url": "https://swachhon.com/about",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "SwachhOn",
+      "description": "SwachhOn is a leading provider of professional cleaning solutions, specializing in bulk cleaning products for commercial and industrial applications.",
+      "foundingDate": "2024",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "IN"
+      }
+    }
+  };
+
   return (
     <div className="about-page">
+      <SEOHead 
+        title="About SwachhOn - Professional Cleaning Solutions Company | Our Story"
+        description="Learn about SwachhOn's mission to provide professional cleaning solutions, our expertise in industrial and commercial cleaning products, and our commitment to quality and innovation in India."
+        keywords="About SwachhOn, cleaning company, professional cleaning solutions, industrial cleaning expertise, commercial cleaning, cleaning products manufacturer, cleaning company India"
+        url="https://swachhon.com/about"
+        structuredData={aboutStructuredData}
+      />
       {/* Hero Section */}
       <section className="about-hero-section" ref={heroRef}>
         <motion.div 

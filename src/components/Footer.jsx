@@ -1,9 +1,79 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import './Footer.css'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
+
+  // Add business schema markup
+  useEffect(() => {
+    const businessSchema = {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "SwachhOn",
+      "description": "Leading provider of premium cleaning products and solutions for industrial, commercial, and institutional cleaning needs.",
+      "url": "https://swachhon.com",
+      "logo": "https://swachhon.com/public/SwachhOn_icon.png",
+      "image": "https://swachhon.com/public/SwachhOn_icon.png",
+      "telephone": "+91-8954535455",
+      "email": "swachhonecosolutions@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Business District",
+        "addressCountry": "IN"
+      },
+      "openingHours": [
+        "Mo-Fr 09:00-18:00"
+      ],
+      "serviceArea": {
+        "@type": "Place",
+        "name": "India"
+      },
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Cleaning Products and Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product",
+              "name": "Industrial Cleaning Products",
+              "category": "Cleaning Supplies"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Product", 
+              "name": "Commercial Cleaning Equipment",
+              "category": "Cleaning Equipment"
+            }
+          }
+        ]
+      },
+      "sameAs": []
+    };
+
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(businessSchema);
+    script.id = 'business-schema';
+    
+    // Remove existing script if any
+    const existingScript = document.getElementById('business-schema');
+    if (existingScript) {
+      document.head.removeChild(existingScript);
+    }
+    
+    document.head.appendChild(script);
+
+    return () => {
+      const scriptToRemove = document.getElementById('business-schema');
+      if (scriptToRemove) {
+        document.head.removeChild(scriptToRemove);
+      }
+    };
+  }, []);
 
   const quickLinks = [
     { name: 'About Us', href: '/about' },
