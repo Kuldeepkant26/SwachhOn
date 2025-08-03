@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import './FAQ.css';
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
@@ -80,52 +81,46 @@ const FAQ = () => {
   }, []);
 
   return (
-    <section className="faq-section py-16 bg-gray-50">
-      <div className="container mx-auto px-6">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-            Frequently Asked Questions
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Get answers to common questions about SwachhOn cleaning products and services
-          </p>
+    <section className="faq-section">
+      <div className="container">
+        <div className="faq-header">
+          <h2>Frequently Asked Questions</h2>
+          <p>Get answers to common questions about SwachhOn cleaning products and services</p>
         </div>
 
-        <div className="max-w-4xl mx-auto">
+        <div className="faq-container">
           {faqs.map((faq, index) => (
-            <div key={index} className="mb-4">
+            <div key={index} className={`faq-item ${openIndex === index ? 'expanded' : ''}`}>
               <button
                 onClick={() => toggleFAQ(index)}
-                className="w-full text-left p-6 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 focus:outline-none focus:ring-2 focus:ring-green-500"
+                className={`faq-question-button ${openIndex === index ? 'active' : ''}`}
                 aria-expanded={openIndex === index}
+                aria-controls={`faq-answer-${index}`}
               >
-                <div className="flex justify-between items-center">
-                  <h3 className="text-lg font-semibold text-gray-800 pr-4">
-                    {faq.question}
-                  </h3>
-                  <span className="text-2xl text-green-600 font-bold">
-                    {openIndex === index ? '−' : '+'}
-                  </span>
-                </div>
+                <h3 className="faq-question-text">
+                  {faq.question}
+                </h3>
+                <span className={`faq-toggle-icon ${openIndex === index ? 'active' : ''}`}>
+                  +
+                </span>
               </button>
               
-              <AnimatePresence>
-                {openIndex === index && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-6 pt-0 bg-white">
-                      <p className="text-gray-600 leading-relaxed">
-                        {faq.answer}
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              <div 
+                id={`faq-answer-${index}`}
+                className={`faq-answer ${openIndex === index ? 'open' : 'closed'}`}
+                style={{
+                  maxHeight: openIndex === index ? '500px' : '0',
+                  opacity: openIndex === index ? 1 : 0,
+                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                  overflow: 'hidden'
+                }}
+              >
+                <div className="faq-answer-content">
+                  <p className="faq-answer-text">
+                    {faq.answer}
+                  </p>
+                </div>
+              </div>
             </div>
           ))}
         </div>
