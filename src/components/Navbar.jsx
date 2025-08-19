@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import ContactModal from './ContactModal.jsx'
+import AuthModal from './AuthModal.jsx'
+import UserDropdown from './UserDropdown.jsx'
+import { useAuth } from '../contexts/AuthContext.jsx'
 import logo3 from '../assets/logo3.png'
 import './Navbar.css'
 
@@ -8,7 +10,8 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeDropdown, setActiveDropdown] = useState(null)
-  const [isContactModalOpen, setIsContactModalOpen] = useState(false)
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false)
+  const { isAuthenticated, loading } = useAuth()
 
   // Handle scroll effect
   useEffect(() => {
@@ -57,8 +60,8 @@ const Navbar = () => {
     setActiveDropdown(activeDropdown === index ? null : index)
   }
 
-  const handleGetQuoteClick = () => {
-    setIsContactModalOpen(true)
+  const handleSignInClick = () => {
+    setIsAuthModalOpen(true)
     setIsMobileMenuOpen(false) // Close mobile menu if open
   }
 
@@ -141,19 +144,28 @@ const Navbar = () => {
           ))}
         </div>
 
-        {/* CTA Button */}
-        <motion.div 
-          className="navbar-cta desktop-cta"
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <button onClick={handleGetQuoteClick} className="cta-button">
-            <span>Get Quote</span>
-            <svg className="cta-arrow" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-            </svg>
-          </button>
-        </motion.div>
+        {/* Authentication Section */}
+        <div className="navbar-auth desktop-auth">
+          {loading ? (
+            <div className="auth-loading">
+              <div className="spinner-small"></div>
+            </div>
+          ) : isAuthenticated ? (
+            <UserDropdown />
+          ) : (
+            <motion.button 
+              onClick={handleSignInClick} 
+              className="signin-button"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <span>Sign In</span>
+              <svg className="signin-arrow" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.293 2.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L12.586 10H5a1 1 0 110-2h7.586L10.293 6.707a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </motion.button>
+          )}
+        </div>
 
         {/* Mobile Menu Button */}
         <motion.button
@@ -239,31 +251,39 @@ const Navbar = () => {
                 </div>
               ))}
 
-              {/* Mobile CTA */}
-              <motion.div 
-                className="mobile-cta"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <button 
-                  onClick={handleGetQuoteClick}
-                  className="mobile-cta-button"
-                >
-                  <span>Get Quote</span>
-                  <svg className="mobile-cta-arrow" viewBox="0 0 20 20" fill="currentColor">
-                    <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-                  </svg>
-                </button>
-              </motion.div>
+              {/* Mobile Authentication */}
+              <div className="mobile-auth">
+                {loading ? (
+                  <div className="auth-loading mobile">
+                    <div className="spinner-small"></div>
+                    <span>Loading...</span>
+                  </div>
+                ) : isAuthenticated ? (
+                  <UserDropdown />
+                ) : (
+                  <motion.button 
+                    onClick={handleSignInClick}
+                    className="mobile-signin-button"
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <span>Sign In</span>
+                    <svg className="mobile-signin-arrow" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.293 2.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L12.586 10H5a1 1 0 110-2h7.586L10.293 6.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </motion.button>
+                )}
+              </div>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
-      {/* Contact Modal */}
-      <ContactModal 
-        isOpen={isContactModalOpen} 
-        onClose={() => setIsContactModalOpen(false)} 
+      {/* Authentication Modal */}
+      <AuthModal 
+        isOpen={isAuthModalOpen} 
+        onClose={() => setIsAuthModalOpen(false)} 
+        initialMode="login"
       />
     </motion.nav>
   )

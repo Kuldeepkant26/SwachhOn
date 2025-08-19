@@ -626,11 +626,148 @@
   }
 }
 
+/* ==========================================================================
+   AUTHENTICATION STYLES
+   ========================================================================== */
+
+/* Desktop Authentication */
+.navbar-auth.desktop-auth {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.signin-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+.signin-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(5, 150, 105, 0.4);
+}
+
+.signin-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.signin-button:hover .signin-arrow {
+  transform: translateX(2px);
+}
+
+/* Mobile Authentication */
+.mobile-auth {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(5, 150, 105, 0.2);
+}
+
+.mobile-signin-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: white;
+  border: none;
+  padding: 16px 24px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 16px rgba(5, 150, 105, 0.3);
+}
+
+.mobile-signin-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(5, 150, 105, 0.4);
+}
+
+.mobile-signin-arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.mobile-signin-button:hover .mobile-signin-arrow {
+  transform: translateX(3px);
+}
+
+/* Loading States */
+.auth-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.auth-loading.mobile {
+  justify-content: center;
+  padding: 16px;
+  color: #059669;
+}
+
+.spinner-small {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid currentColor;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Navbar Scrolled State Updates */
+.navbar.navbar-scrolled .signin-button {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 2px 8px rgba(5, 150, 105, 0.2);
+}
+
+.navbar.navbar-scrolled .signin-button:hover {
+  box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .navbar-auth.desktop-auth {
+    display: none;
+  }
+  
+  .mobile-auth {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-auth {
+    display: none;
+  }
+}
+
 /* Focus states for accessibility */
 .nav-link:focus,
-.cta-button:focus,
+.signin-button:focus,
 .mobile-nav-link:focus,
-.mobile-cta-button:focus {
+.mobile-signin-button:focus {
   outline: 2px solid #059669;
   outline-offset: 2px;
 }
@@ -644,5 +781,159 @@
   .nav-link,
   .mobile-nav-link {
     border: 1px solid #059669;
+  }
+  
+  .signin-button,
+  .mobile-signin-button {
+    border: 2px solid #047857;
+  }
+}
+
+/* ==========================================================================
+   AUTHENTICATION STYLES
+   ========================================================================== */
+
+/* Authentication Section */
+.navbar-auth {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.auth-loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
+}
+
+.auth-loading.mobile {
+  justify-content: center;
+  padding: 16px;
+  color: #6b7280;
+}
+
+.spinner-small {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.navbar.navbar-scrolled .spinner-small {
+  border: 2px solid rgba(5, 150, 105, 0.3);
+  border-top: 2px solid #059669;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Sign In Button */
+.signin-button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(5, 150, 105, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.signin-button:hover {
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+  box-shadow: 0 6px 20px 0 rgba(5, 150, 105, 0.4);
+  transform: translateY(-1px);
+}
+
+.signin-arrow {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.signin-button:hover .signin-arrow {
+  transform: translateX(2px);
+}
+
+/* Scrolled state */
+.navbar.navbar-scrolled .signin-button {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: white;
+}
+
+.navbar.navbar-scrolled .signin-button:hover {
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+}
+
+/* Mobile Authentication */
+.mobile-auth {
+  padding: 16px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 16px;
+}
+
+.mobile-signin-button {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  color: white;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px 0 rgba(5, 150, 105, 0.3);
+}
+
+.mobile-signin-button:hover {
+  background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+  transform: translateY(-1px);
+}
+
+.mobile-signin-arrow {
+  width: 18px;
+  height: 18px;
+  transition: transform 0.2s ease;
+}
+
+.mobile-signin-button:hover .mobile-signin-arrow {
+  transform: translateX(2px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .desktop-auth {
+    display: none;
+  }
+  
+  .mobile-auth {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-auth {
+    display: none;
+  }
+  
+  .desktop-auth {
+    display: flex;
   }
 }
