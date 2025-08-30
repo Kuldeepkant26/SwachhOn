@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import AuthModal from './AuthModal.jsx'
-import UserDropdown from './UserDropdown.jsx'
+import UserProfileButton from './UserProfileButton.jsx'
 import { useAuth } from '../contexts/AuthContext.jsx'
 import logo3 from '../assets/logo3.png'
 import './Navbar.css'
@@ -151,7 +151,7 @@ const Navbar = () => {
               <div className="spinner-small"></div>
             </div>
           ) : isAuthenticated ? (
-            <UserDropdown />
+            <UserProfileButton />
           ) : (
             <motion.button 
               onClick={handleSignInClick} 
@@ -167,19 +167,33 @@ const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile Menu Button */}
-        <motion.button
-          className="mobile-menu-btn"
-          onClick={toggleMobileMenu}
-          whileTap={{ scale: 0.95 }}
-          aria-label="Toggle mobile menu"
-        >
-          <div className={`hamburger ${isMobileMenuOpen ? 'hamburger-open' : ''}`}>
-            <span></span>
-            <span></span>
-            <span></span>
+        {/* Mobile Menu Controls - Profile Button + Hamburger Menu */}
+        <div className="mobile-menu-controls">
+          {/* Mobile Authentication - appears with hamburger menu */}
+          <div className="mobile-auth-inline">
+            {loading ? (
+              <div className="auth-loading mobile-inline">
+                <div className="spinner-small"></div>
+              </div>
+            ) : isAuthenticated ? (
+              <UserProfileButton />
+            ) : null}
           </div>
-        </motion.button>
+
+          {/* Mobile Menu Button */}
+          <motion.button
+            className="mobile-menu-btn"
+            onClick={toggleMobileMenu}
+            whileTap={{ scale: 0.95 }}
+            aria-label="Toggle mobile menu"
+          >
+            <div className={`hamburger ${isMobileMenuOpen ? 'hamburger-open' : ''}`}>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </motion.button>
+        </div>
       </div>
 
       {/* Mobile Navigation Menu */}
@@ -258,9 +272,7 @@ const Navbar = () => {
                     <div className="spinner-small"></div>
                     <span>Loading...</span>
                   </div>
-                ) : isAuthenticated ? (
-                  <UserDropdown />
-                ) : (
+                ) : !isAuthenticated ? (
                   <motion.button 
                     onClick={handleSignInClick}
                     className="mobile-signin-button"
@@ -272,7 +284,7 @@ const Navbar = () => {
                       <path fillRule="evenodd" d="M3 3a1 1 0 011 1v12a1 1 0 11-2 0V4a1 1 0 011-1zm7.293 2.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L12.586 10H5a1 1 0 110-2h7.586L10.293 6.707a1 1 0 010-1.414z" clipRule="evenodd" />
                     </svg>
                   </motion.button>
-                )}
+                ) : null}
               </div>
             </div>
           </motion.div>

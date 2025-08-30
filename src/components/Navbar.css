@@ -337,6 +337,30 @@
 }
 
 /* ==========================================================================
+   MOBILE MENU CONTROLS (Profile + Hamburger)
+   ========================================================================== */
+
+.mobile-menu-controls {
+  display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobile-auth-inline {
+  display: flex;
+  align-items: center;
+}
+
+.mobile-auth-inline .auth-loading.mobile-inline {
+  padding: 8px;
+}
+
+.mobile-auth-inline .auth-loading.mobile-inline .spinner-small {
+  width: 20px;
+  height: 20px;
+}
+
+/* ==========================================================================
    MOBILE MENU BUTTON
    ========================================================================== */
 
@@ -558,6 +582,10 @@
   .desktop-nav,
   .desktop-cta {
     display: none;
+  }
+  
+  .mobile-menu-controls {
+    display: flex;
   }
   
   .mobile-menu-btn {
